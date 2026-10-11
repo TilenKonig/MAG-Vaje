@@ -1,0 +1,15 @@
+# Java / Maven
+target/
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+
+# Podatki baze (Docker volume, če je bind mount)
+cockroach-data/
+
+# IDE
+.idea/
+.vscode/
+*.iml
