@@ -1,0 +1,11 @@
+services:
+  db:
+    build: ./db
+    ports:
+      - "26257:26257" # SQL
+      - "8081:8081"   # DB Console
+    volumes:
+      - db-data:/cockroach/cockroach-data
+
+volumes:
+  db-data:
