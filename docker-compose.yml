@@ -1,11 +1,24 @@
 services:
   db:
     build: ./db
+    environment:
+      COCKROACH_DATABASE: delavnica # ustvari bazo ob prvem zagonu
     ports:
       - "26257:26257" # SQL
       - "8081:8081"   # DB Console
     volumes:
       - db-data:/cockroach/cockroach-data
+
+  api:
+    build: ./backend/delavnica-api
+    depends_on:
+      - db
+    restart: on-failure # če baza še ni pripravljena, se backend ponovno zažene
+    environment:
+      # v omrežju compose je baza dosegljiva pod imenom storitve "db"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:26257/delavnica?sslmode=disable
+    ports:
+      - "8080:8080" # REST API in Swagger
 
 volumes:
   db-data:
