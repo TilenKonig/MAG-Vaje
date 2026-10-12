@@ -1,0 +1,24 @@
+<h2>Računi</h2>
+
+<table>
+  <tr><th>Datum</th><th>Vozilo</th><th>Težava</th><th>Znesek</th><th>Plačan</th></tr>
+  @for (racun of racuni.value(); track racun.id) {
+    <tr>
+      <td>{{ racun.datum }}</td>
+      <td>{{ racun.nalog.vozilo.registrska }}</td>
+      <td>{{ racun.nalog.opis }}</td>
+      <td>{{ racun.znesek }} €</td>
+      <td>
+        @if (racun.placan) {
+          Da
+        } @else if (jeVodja()) {
+          <button mat-button (click)="oznaciPlacan(racun)">Označi kot plačan</button>
+        } @else {
+          Ne
+        }
+      </td>
+    </tr>
+  } @empty {
+    <tr><td colspan="5">Ni računov.</td></tr>
+  }
+</table>

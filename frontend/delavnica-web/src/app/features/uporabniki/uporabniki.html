@@ -1,0 +1,34 @@
+<div class="glava">
+  <h2>Uporabniki</h2>
+  <button mat-flat-button (click)="dodaj(obrazecPredloga)">Dodaj uporabnika</button>
+</div>
+
+<table>
+  <tr><th>Ime</th><th>Email</th><th>Telefon</th><th>Vloga</th><th></th></tr>
+  @for (uporabnik of uporabniki.value(); track uporabnik.id) {
+    <tr>
+      <td>{{ uporabnik.ime }} {{ uporabnik.priimek }}</td>
+      <td>{{ uporabnik.email }}</td>
+      <td>{{ uporabnik.telefon }}</td>
+      <td>{{ uporabnik.vloga }}</td>
+      <td><button mat-button (click)="izbrisi(uporabnik)">Izbriši</button></td>
+    </tr>
+  }
+</table>
+
+<!-- polja obrazca, prikaže jih okno -->
+<ng-template #obrazecPredloga>
+  <mat-form-field><mat-label>Ime</mat-label><input matInput [formField]="obrazec.ime" /></mat-form-field>
+  <mat-form-field><mat-label>Priimek</mat-label><input matInput [formField]="obrazec.priimek" /></mat-form-field>
+  <mat-form-field><mat-label>Email</mat-label><input matInput type="email" [formField]="obrazec.email" /></mat-form-field>
+  <mat-form-field><mat-label>Geslo</mat-label><input matInput type="password" [formField]="obrazec.geslo" /></mat-form-field>
+  <mat-form-field><mat-label>Telefon</mat-label><input matInput [formField]="obrazec.telefon" /></mat-form-field>
+  <mat-form-field>
+    <mat-label>Vloga</mat-label>
+    <select matNativeControl [formField]="obrazec.vloga">
+      @for (vloga of vloge; track vloga) {
+        <option [value]="vloga">{{ vloga }}</option>
+      }
+    </select>
+  </mat-form-field>
+</ng-template>

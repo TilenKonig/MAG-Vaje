@@ -1,0 +1,41 @@
+<div class="glava">
+  <h2>Vozila</h2>
+  @if (jeVodja()) {
+    <button mat-flat-button (click)="dodaj(obrazecPredloga)">Dodaj vozilo</button>
+  }
+</div>
+
+<table>
+  <tr>
+    <th>Registrska</th><th>Vozilo</th><th>Letnik</th><th>Lastnik</th>
+    @if (jeVodja()) { <th></th> }
+  </tr>
+  @for (vozilo of vozila.value(); track vozilo.id) {
+    <tr>
+      <td>{{ vozilo.registrska }}</td>
+      <td>{{ vozilo.znamka }} {{ vozilo.model }}</td>
+      <td>{{ vozilo.letnik }}</td>
+      <td>{{ vozilo.lastnik.ime }} {{ vozilo.lastnik.priimek }}</td>
+      @if (jeVodja()) {
+        <td><button mat-button (click)="izbrisi(vozilo)">Izbriši</button></td>
+      }
+    </tr>
+  }
+</table>
+
+<!-- polja obrazca, prikaže jih okno -->
+<ng-template #obrazecPredloga>
+  <mat-form-field>
+    <mat-label>Lastnik</mat-label>
+    <select matNativeControl [formField]="obrazec.lastnikId">
+      <option value="" disabled>Izberi stranko</option>
+      @for (stranka of stranke(); track stranka.id) {
+        <option [value]="stranka.id">{{ stranka.ime }} {{ stranka.priimek }}</option>
+      }
+    </select>
+  </mat-form-field>
+  <mat-form-field><mat-label>Znamka</mat-label><input matInput [formField]="obrazec.znamka" /></mat-form-field>
+  <mat-form-field><mat-label>Model</mat-label><input matInput [formField]="obrazec.model" /></mat-form-field>
+  <mat-form-field><mat-label>Letnik</mat-label><input matInput type="number" [formField]="obrazec.letnik" /></mat-form-field>
+  <mat-form-field><mat-label>Registrska številka</mat-label><input matInput [formField]="obrazec.registrska" /></mat-form-field>
+</ng-template>

@@ -1,0 +1,100 @@
+<div class="glava">
+  <h2>Delovni nalogi</h2>
+  @if (jeVodja()) {
+    <button mat-flat-button (click)="odpriNalog(nalogPredloga)">Odpri nalog</button>
+  }
+</div>
+
+<table>
+  <tr><th>Datum</th><th>Vozilo</th><th>Težava</th><th>Stanje</th></tr>
+  @for (nalog of nalogi.value(); track nalog.id) {
+    <tr class="klik" [class.izbran]="nalog.id === izbranId()" (click)="izbranId.set(nalog.id)">
+      <td>{{ nalog.datumOdprtja }}</td>
+      <td>{{ nalog.vozilo.registrska }}</td>
+      <td>{{ nalog.opis }}</td>
+      <td>{{ nalog.stanje }}</td>
+    </tr>
+  } @empty {
+    <tr><td colspan="4">Ni nalogov.</td></tr>
+  }
+</table>
+
+@if (izbran(); as nalog) {
+  <section>
+    <h3>{{ nalog.vozilo.znamka }} {{ nalog.vozilo.model }}, {{ nalog.vozilo.registrska }}</h3>
+    <p>Težava: {{ nalog.opis }}</p>
+
+    @if (jeOsebje() && nalog.stanje !== 'OBRACUNAN') {
+      <form class="vrstica" [formRoot]="obrazecUrejanje">
+        <mat-form-field>
+          <mat-label>Stanje</mat-label>
+          <select matNativeControl [formField]="obrazecUrejanje.stanje">
+            @for (stanje of stanja; track stanje) {
+              <option [value]="stanje">{{ stanje }}</option>
+            }
+          </select>
+        </mat-form-field>
+        <mat-form-field class="siroko"><mat-label>Opis opravljenega dela</mat-label><input matInput [formField]="obrazecUrejanje.opisDela" /></mat-form-field>
+        <mat-form-field><mat-label>Ure dela</mat-label><input matInput type="number" [formField]="obrazecUrejanje.ureDela" /></mat-form-field>
+        <button mat-flat-button>Shrani</button>
+      </form>
+    } @else {
+      <p>Stanje: {{ nalog.stanje }}</p>
+      <p>Opravljeno delo: {{ nalog.opisDela }}</p>
+      <p>Ure dela: {{ nalog.ureDela }}</p>
+    }
+
+    <div class="glava">
+      <h4>Uporabljeni deli</h4>
+      @if (jeOsebje() && nalog.stanje !== 'OBRACUNAN') {
+        <button mat-flat-button (click)="odpriDel(delPredloga)">Dodaj del</button>
+      }
+    </div>
+    <table>
+      <tr><th>Del</th><th>Količina</th><th>Cena</th></tr>
+      @for (postavka of postavke.value(); track postavka.id) {
+        <tr>
+          <td>{{ postavka.del.naziv }}</td>
+          <td>{{ postavka.kolicina }}</td>
+          <td>{{ postavka.cena }} €</td>
+        </tr>
+      } @empty {
+        <tr><td colspan="3">Ni dodanih delov.</td></tr>
+      }
+    </table>
+
+    @if (jeVodja()) {
+      @if (nalog.stanje === 'ZAKLJUCEN') {
+        <button mat-flat-button (click)="izdajRacun()">Izdaj račun</button>
+      }
+      <button mat-button (click)="izbrisi()">Izbriši nalog</button>
+    }
+  </section>
+}
+
+<!-- polja obrazcev, prikaže jih okno -->
+<ng-template #nalogPredloga>
+  <mat-form-field>
+    <mat-label>Vozilo</mat-label>
+    <select matNativeControl [formField]="obrazecNalog.voziloId">
+      <option value="" disabled>Izberi vozilo</option>
+      @for (vozilo of vozila.value(); track vozilo.id) {
+        <option [value]="vozilo.id">{{ vozilo.registrska }} ({{ vozilo.znamka }} {{ vozilo.model }})</option>
+      }
+    </select>
+  </mat-form-field>
+  <mat-form-field><mat-label>Opis težave</mat-label><input matInput [formField]="obrazecNalog.opis" /></mat-form-field>
+</ng-template>
+
+<ng-template #delPredloga>
+  <mat-form-field>
+    <mat-label>Rezervni del</mat-label>
+    <select matNativeControl [formField]="obrazecDel.delId">
+      <option value="" disabled>Izberi del</option>
+      @for (del of deli.value(); track del.id) {
+        <option [value]="del.id">{{ del.naziv }} (zaloga {{ del.zaloga }})</option>
+      }
+    </select>
+  </mat-form-field>
+  <mat-form-field><mat-label>Količina</mat-label><input matInput type="number" [formField]="obrazecDel.kolicina" /></mat-form-field>
+</ng-template>

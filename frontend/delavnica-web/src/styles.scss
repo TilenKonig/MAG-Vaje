@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: mat.$azure-palette,
+    typography: system-ui,
+    density: -1 // pri -2 in manj Material skrije labele polj
+  ));
+}
+
+body {
+  margin: 0;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font-family: system-ui, sans-serif;
+}
+
+main { padding: 16px; max-width: 1100px; margin: 0 auto; }
+h2 { margin: 8px 0; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--mat-sys-outline-variant); }
+tr.klik { cursor: pointer; }
+tr.klik:hover, tr.izbran { background: var(--mat-sys-surface-container); }
+.glava { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+form.vrstica { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
+.nizka { color: var(--mat-sys-error); font-weight: bold; }

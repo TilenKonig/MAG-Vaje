@@ -1,7 +1,11 @@
 # 1. stopnja: gradnja jar datoteke
 FROM eclipse-temurin:25-jdk AS build
 WORKDIR /app
-COPY . .
+# najprej samo odvisnosti, da jih Docker pri spremembi kode ne prenaša znova
+COPY pom.xml mvnw ./
+COPY .mvn .mvn
+RUN ./mvnw -q dependency:go-offline
+COPY src src
 RUN ./mvnw -q -DskipTests package
 
 # 2. stopnja: samo JRE in jar, da je slika majhna

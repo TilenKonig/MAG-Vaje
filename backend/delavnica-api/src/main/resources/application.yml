@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: delavnica-api
+  datasource:
+    # CockroachDB (docker compose), povezava prek PostgreSQL gonilnika
+    url: jdbc:postgresql://localhost:26257/delavnica?sslmode=disable
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update # Hibernate sam ustvari tabele
+  web:
+    error:
+      include-message: always # sporočila napak (npr. "Premalo zaloge") se vrnejo odjemalcu
+
+# Skrivnost za podpis JWT (samo za razvoj, najmanj 32 znakov)
+jwt:
+  secret: "delavnica-razvojna-skrivnost-32-znakov!"

@@ -1,6 +1,7 @@
 services:
   db:
     build: ./db
+    image: delavnica-db:1.0.0 # pred nalaganjem na Docker Hub dodaj svoje uporabniško ime (uporabnik/delavnica-db:1.0.0)
     environment:
       COCKROACH_DATABASE: delavnica # ustvari bazo ob prvem zagonu
     ports:
@@ -11,6 +12,7 @@ services:
 
   api:
     build: ./backend/delavnica-api
+    image: delavnica-api:1.0.0 # pred nalaganjem na Docker Hub dodaj svoje uporabniško ime
     depends_on:
       - db
     restart: on-failure # če baza še ni pripravljena, se backend ponovno zažene

@@ -1,0 +1,33 @@
+<div class="glava">
+  <h2>Rezervni deli</h2>
+  @if (jeVodja()) {
+    <button mat-flat-button (click)="dodaj(obrazecPredloga)">Dodaj del</button>
+  }
+</div>
+
+<table>
+  <tr>
+    <th>Šifra</th><th>Naziv</th><th>Cena</th><th>Zaloga</th>
+    @if (jeVodja()) { <th></th> }
+  </tr>
+  @for (del of deli.value(); track del.id) {
+    <tr>
+      <td>{{ del.sifra }}</td>
+      <td>{{ del.naziv }}</td>
+      <td>{{ del.cena }} €</td>
+      <td [class.nizka]="del.zaloga <= del.minZaloga">{{ del.zaloga }}</td>
+      @if (jeVodja()) {
+        <td><button mat-button (click)="izbrisi(del)">Izbriši</button></td>
+      }
+    </tr>
+  }
+</table>
+
+<!-- polja obrazca, prikaže jih okno -->
+<ng-template #obrazecPredloga>
+  <mat-form-field><mat-label>Šifra</mat-label><input matInput [formField]="obrazec.sifra" /></mat-form-field>
+  <mat-form-field><mat-label>Naziv</mat-label><input matInput [formField]="obrazec.naziv" /></mat-form-field>
+  <mat-form-field><mat-label>Cena (€)</mat-label><input matInput type="number" [formField]="obrazec.cena" /></mat-form-field>
+  <mat-form-field><mat-label>Zaloga (kosov)</mat-label><input matInput type="number" [formField]="obrazec.zaloga" /></mat-form-field>
+  <mat-form-field><mat-label>Minimalna zaloga</mat-label><input matInput type="number" [formField]="obrazec.minZaloga" /></mat-form-field>
+</ng-template>

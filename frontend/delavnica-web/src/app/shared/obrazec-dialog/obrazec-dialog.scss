@@ -1,0 +1,6 @@
+// polja so en pod drugim čez celotno širino okna
+.polja {
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+}

@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>{{ podatki.naslov }}</h2>
+
+<mat-dialog-content>
+  <div class="polja">
+    <ng-container [ngTemplateOutlet]="podatki.predloga" />
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Prekliči</button>
+  <button mat-flat-button [disabled]="!podatki.veljaven()" (click)="shrani()">Shrani</button>
+</mat-dialog-actions>
