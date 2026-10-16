@@ -6,16 +6,17 @@
 </div>
 
 <table>
-  <tr><th>Datum</th><th>Vozilo</th><th>Težava</th><th>Stanje</th></tr>
+  <tr><th>Datum</th><th>Vozilo</th><th>Mehanik</th><th>Težava</th><th>Stanje</th></tr>
   @for (nalog of nalogi.value(); track nalog.id) {
     <tr class="klik" [class.izbran]="nalog.id === izbranId()" (click)="izbranId.set(nalog.id)">
       <td>{{ nalog.datumOdprtja }}</td>
       <td>{{ nalog.vozilo.registrska }}</td>
+      <td>{{ nalog.mehanik.ime }} {{ nalog.mehanik.priimek }}</td>
       <td>{{ nalog.opis }}</td>
       <td>{{ nalog.stanje }}</td>
     </tr>
   } @empty {
-    <tr><td colspan="4">Ni nalogov.</td></tr>
+    <tr><td colspan="5">Ni nalogov.</td></tr>
   }
 </table>
 
@@ -80,6 +81,15 @@
       <option value="" disabled>Izberi vozilo</option>
       @for (vozilo of vozila.value(); track vozilo.id) {
         <option [value]="vozilo.id">{{ vozilo.registrska }} ({{ vozilo.znamka }} {{ vozilo.model }})</option>
+      }
+    </select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Mehanik</mat-label>
+    <select matNativeControl [formField]="obrazecNalog.mehanikId">
+      <option value="" disabled>Izberi mehanika</option>
+      @for (mehanik of mehaniki(); track mehanik.id) {
+        <option [value]="mehanik.id">{{ mehanik.ime }} {{ mehanik.priimek }}</option>
       }
     </select>
   </mat-form-field>

@@ -4,18 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class Uporabnik {
+public class Uporabnik extends BaseEntity {
 
 	public enum Vloga { MEHANIK, STRANKA, VODJA }
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
 
 	@Column(unique = true)
 	private String email;

@@ -4,16 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class PostavkaNaloga {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+public class PostavkaNaloga extends BaseEntity {
 
 	@ManyToOne
 	private DelovniNalog nalog;

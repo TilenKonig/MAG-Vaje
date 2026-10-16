@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface DelovniNalogRepository extends JpaRepository<DelovniNalog, UUID> {
 	List<DelovniNalog> findByVoziloLastnikId(UUID lastnikId);
+
+	List<DelovniNalog> findByMehanikId(UUID mehanikId);
 }

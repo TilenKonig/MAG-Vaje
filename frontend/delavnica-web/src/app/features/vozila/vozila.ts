@@ -1,4 +1,3 @@
-import { HttpClient, httpResource } from '@angular/common/http';
 import { Component, TemplateRef, computed, inject, signal } from '@angular/core';
 import { FormField, form, min, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,7 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../core/auth.service';
-import { Uporabnik, Vozilo } from '../../core/models';
+import { UporabnikiService } from '../../core/api/uporabniki.service';
+import { VozilaService } from '../../core/api/vozila.service';
+import { Vozilo } from '../../core/models';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
 const prazno = { lastnikId: '', znamka: '', model: '', letnik: 2020, registrska: '' };
@@ -17,15 +18,16 @@ const prazno = { lastnikId: '', znamka: '', model: '', letnik: 2020, registrska:
   styleUrl: './vozila.scss',
 })
 export class Vozila {
-  private http = inject(HttpClient);
+  private vozilaApi = inject(VozilaService);
+  private uporabnikiApi = inject(UporabnikiService);
   private dialog = inject(MatDialog);
   private auth = inject(AuthService);
 
   protected readonly jeVodja = this.auth.jeVodja;
-  protected readonly vozila = httpResource<Vozilo[]>(() => '/api/vozila', { defaultValue: [] });
+  protected readonly vozila = this.vozilaApi.seznam();
 
   // seznam uporabnikov (za izbiro lastnika) vidi samo vodja
-  private uporabniki = httpResource<Uporabnik[]>(() => (this.jeVodja() ? '/api/uporabniki' : undefined), { defaultValue: [] });
+  private uporabniki = this.uporabnikiApi.seznam(this.jeVodja);
   protected readonly stranke = computed(() => this.uporabniki.value().filter((uporabnik) => uporabnik.vloga === 'STRANKA'));
 
   private model = signal({ ...prazno });
@@ -44,7 +46,7 @@ export class Vozila {
       veljaven: () => !this.obrazec().invalid(),
       shrani: () => {
         const { lastnikId, ...vozilo } = this.model();
-        return this.http.post('/api/vozila', { ...vozilo, lastnik: { id: lastnikId } });
+        return this.vozilaApi.ustvari({ ...vozilo, lastnik: { id: lastnikId } });
       },
     }).subscribe((shranjeno) => {
       this.obrazec().reset({ ...prazno });
@@ -53,6 +55,6 @@ export class Vozila {
   }
 
   protected izbrisi(vozilo: Vozilo) {
-    this.http.delete(`/api/vozila/${vozilo.id}`).subscribe(() => this.vozila.reload());
+    this.vozilaApi.izbrisi(vozilo.id).subscribe(() => this.vozila.reload());
   }
 }

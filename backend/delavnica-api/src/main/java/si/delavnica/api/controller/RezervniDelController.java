@@ -3,9 +3,8 @@ package si.delavnica.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import si.delavnica.api.model.RezervniDel;
-import si.delavnica.api.repository.RezervniDelRepository;
+import si.delavnica.api.service.RezervniDelService;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,35 +13,32 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RezervniDelController {
 
-	private final RezervniDelRepository deli;
+	private final RezervniDelService deli;
 
 	@GetMapping
-	List<RezervniDel> vsi() {
-		return deli.findAll();
+	List<RezervniDel> getAll() {
+		return deli.getAll();
 	}
 
 	@GetMapping("/{id}")
-	RezervniDel en(@PathVariable UUID id) {
-		return deli.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	RezervniDel getById(@PathVariable UUID id) {
+		return deli.getById(id);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	RezervniDel ustvari(@RequestBody RezervniDel rezervniDel) {
-		rezervniDel.setId(null);
-		return deli.save(rezervniDel);
+		return deli.ustvari(rezervniDel);
 	}
 
 	@PutMapping("/{id}")
 	RezervniDel posodobi(@PathVariable UUID id, @RequestBody RezervniDel rezervniDel) {
-		en(id); // 404, če ne obstaja
-		rezervniDel.setId(id);
-		return deli.save(rezervniDel);
+		return deli.posodobi(id, rezervniDel);
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void izbrisi(@PathVariable UUID id) {
-		deli.delete(en(id));
+		deli.izbrisi(id);
 	}
 }

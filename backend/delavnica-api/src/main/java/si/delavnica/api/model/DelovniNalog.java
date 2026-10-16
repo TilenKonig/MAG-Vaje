@@ -7,22 +7,21 @@ import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class DelovniNalog {
+public class DelovniNalog extends BaseEntity {
 
 	public enum Stanje { ODPRT, V_DELU, ZAKLJUCEN, OBRACUNAN }
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
 
 	@NotNull
 	@ManyToOne
 	private Vozilo vozilo;
+
+	@NotNull
+	@ManyToOne
+	private Uporabnik mehanik; // mehanik, ki mu je nalog dodeljen
 
 	@NotBlank
 	private String opis; // težava, ki jo navede stranka

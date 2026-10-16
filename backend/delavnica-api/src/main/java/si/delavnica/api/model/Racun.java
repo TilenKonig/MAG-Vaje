@@ -5,16 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class Racun {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+public class Racun extends BaseEntity {
 
 	@OneToOne
 	private DelovniNalog nalog;

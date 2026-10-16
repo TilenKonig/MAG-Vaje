@@ -31,6 +31,7 @@ export interface RezervniDel {
 export interface DelovniNalog {
   id: string;
   vozilo: Vozilo;
+  mehanik: Uporabnik;
   opis: string;
   opisDela?: string;
   stanje: Stanje;

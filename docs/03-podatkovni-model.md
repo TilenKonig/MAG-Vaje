@@ -1,28 +1,27 @@
 # 03 Podatkovni model
 
-Baza: CockroachDB (relacijski model). Vsi ID-ji so **UUID**.
+Baza: CockroachDB
 
 ## Entitete
 
-**Uporabnik**: id, email, geslo (BCrypt), ime, priimek, telefon, vloga (`MEHANIK` | `STRANKA` | `VODJA`)
-Stranke so uporabniki z vlogo `STRANKA`, zato posebna tabela za stranke ni potrebna.
+**Uporabnik**: id, email, geslo (BCrypt), ime, priimek, telefon, vloga (`MEHANIK` | `STRANKA` | `VODJA`).
 
 **Vozilo**: id, lastnik_id, znamka, model, letnik, registrska
 
 **Del**: id, sifra, naziv, cena, zaloga, min_zaloga
 
-**DelovniNalog**: id, vozilo_id, opis (težava), opis_dela, stanje (`ODPRT` | `V_DELU` | `ZAKLJUCEN` | `OBRACUNAN`), ure_dela, datum_odprtja, datum_zaprtja
+**DelovniNalog**: id, vozilo_id, mehanik_id (uporabnik z vlogo `MEHANIK`), opis (težava), opis_dela, stanje (`ODPRT` | `V_DELU` | `ZAKLJUCEN` | `OBRACUNAN`), ure_dela, datum_odprtja, datum_zaprtja
 
 **PostavkaNaloga**: id, nalog_id, del_id, kolicina, cena (cena dela ob dodajanju)
 
 **Racun**: id, nalog_id, znesek, datum, placan
 
-**Narocilo**: id, del_id, kolicina, stanje (`NAROCENO` | `PREJETO`), datum
 
 ## Povezave
 
 - Uporabnik (stranka) 1 : N Vozilo
 - Vozilo 1 : N DelovniNalog
+- Uporabnik (mehanik) 1 : N DelovniNalog
 - DelovniNalog 1 : N PostavkaNaloga
 - Del 1 : N PostavkaNaloga
 - DelovniNalog 1 : 0..1 Racun
@@ -34,10 +33,10 @@ Stranke so uporabniki z vlogo `STRANKA`, zato posebna tabela za stranke ni potre
 erDiagram
     UPORABNIK ||--o{ VOZILO : "je lastnik"
     VOZILO ||--o{ DELOVNI_NALOG : "ima"
+    UPORABNIK ||--o{ DELOVNI_NALOG : "je dodeljen mehaniku"
     DELOVNI_NALOG ||--o{ POSTAVKA_NALOGA : "vsebuje"
     DEL ||--o{ POSTAVKA_NALOGA : "se porabi v"
     DELOVNI_NALOG ||--o| RACUN : "se obračuna z"
-    DEL ||--o{ NAROCILO : "se naroča"
 
     UPORABNIK {
         uuid id
@@ -67,6 +66,7 @@ erDiagram
     DELOVNI_NALOG {
         uuid id
         uuid vozilo_id
+        uuid mehanik_id
         string opis
         string opis_dela
         string stanje
@@ -88,18 +88,11 @@ erDiagram
         date datum
         boolean placan
     }
-    NAROCILO {
-        uuid id
-        uuid del_id
-        int kolicina
-        string stanje
-        date datum
-    }
+
 ```
 
-## Opombe
 
-- Račun = vsota (količina × cena) vseh postavk + ure dela × urna postavka. Urna postavka je konstanta v backendu. Ure dela vpiše vodja ob izdaji računa.
+
+- Račun = vsota (količina × cena) vseh postavk + ure dela × urna postavka. Stranka z vsaj 4 prejšnjimi računi dobi 10 % popusta
 - Cena je shranjena tudi v postavki, da poznejša sprememba cene dela ne spremeni starih računov.
-- Naročilo je simulirano: ob kliku nastane zapis `NAROCENO`, po nekaj sekundah preide v `PREJETO` in zaloga dela se poveča.
-- Za SOA vajo (ena entiteta z REST CRUD) uporabimo **DelovniNalog**.
+- Naročilo je simulirano.

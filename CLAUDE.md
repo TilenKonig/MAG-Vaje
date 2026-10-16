@@ -7,6 +7,7 @@ Namen je demonstracija znanja pri predmetu, ne produkcijska koda.
 
 - **Preprostost na prvem mestu.** Kar se da minimalna koda, brez "fancy" rešitev.
 - **Berljivost in razumljivost** pred zmogljivostjo ali zvitostjo. Študent mora kodo znati razložiti.
+- **Preprostost ne pomeni slabih praks.** Ločene plasti (controller → service → repository, v frontendu komponenta → API servis), brez poslovne logike v kontrolerjih in komponentah, ponavljajoča se koda gre v skupno osnovo (`CrudService`, `BaseEntity`), brez magičnih števil, standardna imena (`getAll`, `getById`).
 - Brez nepotrebnih knjižnic, abstrakcij, konfiguracij in funkcionalnosti, ki jih vaje ne zahtevajo.
 - Vsaka zahtevana funkcionalnost iz vaj mora biti jasno vidna in prikazana.
 - Komentarji kratki, samo kjer razlaga pomaga razumevanju.

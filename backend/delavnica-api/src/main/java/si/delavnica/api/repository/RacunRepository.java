@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface RacunRepository extends JpaRepository<Racun, UUID> {
 	List<Racun> findByNalogVoziloLastnikId(UUID lastnikId);
+
+	long countByNalogVoziloLastnikId(UUID lastnikId);
 }
