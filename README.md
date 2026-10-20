@@ -1,6 +1,6 @@
 # Mehanična delavnica
 
-Šolska aplikacija za mehanično delavnico: delovni nalogi, rezervni deli, računi in evidenca strank. Združuje vaje RIRS, PTS in SOA. Vloge: mehanik, stranka, vodja delavnice.
+Aplikacija za mehanične delavnice: delovni nalogi, rezervni deli, računi in evidenca strank. Vloge: mehanik, stranka, vodja delavnice.
 
 ## Sestava
 
