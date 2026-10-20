@@ -13,3 +13,6 @@ cockroach-data/
 .idea/
 .vscode/
 *.iml
+
+# Claude Code
+CLAUDE.md
