@@ -1,9 +1,9 @@
 services:
   db:
     build: ./db
-    image: tilenkonig/delavnica-db:1.0.0 # pred nalaganjem na Docker Hub dodaj svoje uporabniško ime (uporabnik/delavnica-db:1.0.0)
+    image: tilenkonig/delavnica-db:1.0.1 # probi ce dela
     environment:
-      COCKROACH_DATABASE: delavnica # ustvari bazo ob prvem zagonu
+      COCKROACH_DATABASE: delavnica 
     ports:
       - "26257:26257" # SQL
       - "8081:8081"   # DB Console
@@ -12,12 +12,11 @@ services:
 
   api:
     build: ./backend/delavnica-api
-    image: tilenkonig/delavnica-api:1.0.0 # pred nalaganjem na Docker Hub dodaj svoje uporabniško ime
+    image: tilenkonig/delavnica-api:1.0.1 
     depends_on:
       - db
-    restart: on-failure # če baza še ni pripravljena, se backend ponovno zažene
+    restart: on-failure 
     environment:
-      # v omrežju compose je baza dosegljiva pod imenom storitve "db"
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:26257/delavnica?sslmode=disable
     ports:
       - "8080:8080" # REST API in Swagger
