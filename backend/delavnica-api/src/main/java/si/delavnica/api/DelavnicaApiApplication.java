@@ -13,6 +13,7 @@ import si.delavnica.api.repository.UporabnikRepository;
 public class DelavnicaApiApplication {
 
 	public static void main(String[] args) {
+		System.out.println("PRISTANICNIK dela: api se zaganja");
 		SpringApplication.run(DelavnicaApiApplication.class, args);
 	}
 
