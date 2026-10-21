@@ -17,3 +17,5 @@ cockroach-data/
 # Claude Code
 CLAUDE.md
 navodila/
+
+.env

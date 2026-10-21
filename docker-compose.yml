@@ -3,7 +3,7 @@ services:
     build: ./db
     image: tilenkonig/delavnica-db:1.0.1 # probi ce dela
     environment:
-      COCKROACH_DATABASE: delavnica 
+      COCKROACH_DATABASE: ${DB_NAME} # vrednost iz .env
     ports:
       - "26257:26257" # SQL
       - "8081:8081"   # DB Console
@@ -17,7 +17,7 @@ services:
       - db
     restart: on-failure 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:26257/delavnica?sslmode=disable
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:26257/${DB_NAME}?sslmode=disable
     ports:
       - "8080:8080" # REST API in Swagger
 
