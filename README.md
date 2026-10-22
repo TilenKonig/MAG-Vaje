@@ -1,6 +1,6 @@
 # Mehanična delavnica
 
-Šolska aplikacija za mehanično delavnico: delovni nalogi, rezervni deli, računi in evidenca strank. Združuje vaje RIRS, PTS in SOA. Vloge: mehanik, stranka, vodja delavnice.
+Aplikacija za mehanične delavnice: delovni nalogi, rezervni deli, računi in evidenca strank. Vloge: mehanik, stranka, vodja delavnice.
 
 ## Sestava
 
@@ -18,7 +18,7 @@
    ```bash
    docker compose up --build
    ```
-   - API in Swagger: http://localhost:8080 (Swagger UI na `/swagger-ui/index.html`)
+   - API in Swagger: http://localhost:8080/swagger-ui/index.html
    - Konzola baze: http://localhost:8081
    - SQL: vrata 26257
 2. Frontend:

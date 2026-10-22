@@ -17,7 +17,6 @@ public class DelavnicaApiApplication {
 		SpringApplication.run(DelavnicaApiApplication.class, args);
 	}
 
-	// Prvi vodja, da se je mogoče prijaviti (samo razvoj, geslo je javno)
 	@Bean
 	CommandLineRunner zacetniVodja(UporabnikRepository uporabniki, PasswordEncoder encoder) {
 		return args -> {
