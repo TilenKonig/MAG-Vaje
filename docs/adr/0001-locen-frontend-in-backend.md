@@ -1,22 +1,19 @@
 # Ločen frontend in backend
 
-* Status: sprejeto
-* Datum: 20.10.2026
-
 ## Kontekst in problem
 
-Aplikacijo uporabljajo tri vloge (mehanik, stranka, vodja) prek brskalnika. Vodja bi lahko kasneje želel tudi mobilni odjemalec ali povezavo z drugimi sistemi (npr. dobavitelji delov). Odločiti se je treba, ali bo aplikacija ena enota ali bosta odjemalec in strežnik ločena.
+Aplikacijo uporabljajo tri vloge, to so mehanik, stranka in vodja, in sicer prek brskalnika. Vodja bi lahko kasneje želel še mobilnega odjemalca ali povezavo z drugimi sistemi, na primer z dobavitelji delov. Odločiti se moramo, ali bo aplikacija ena celota ali pa bosta odjemalec in strežnik ločena.
 
-## Obravnavane alternative
+## Obravnavane možnosti
 
-* Enotna aplikacija s strežniško izrisanimi stranmi (npr. Thymeleaf)
+* Enotna aplikacija s strežniško izrisanimi stranmi, na primer s Thymeleafom
 * Ločen Angular frontend in Spring Boot REST API
 
 ## Odločitev
 
-Izbrana alternativa: ločen frontend in REST API, ker poslovna pravila (stanja nalogov, odpis zaloge, obračun) ostanejo na enem mestu, API pa lahko brez sprememb uporabi tudi drug odjemalec. Frontend in backend se lahko tudi nameščata in skalirata neodvisno.
+Odločili smo se za možnost: Ločen Angular frontend in Spring Boot REST API, ker tako poslovna pravila, kot so stanja nalogov, odpis zaloge in obračun, ostanejo na enem mestu. API lahko brez sprememb uporabi tudi drug odjemalec, frontend in backend pa lahko nameščamo in razvijamo neodvisno.
 
 ## Posledice
 
-* Dobro: ena pot do podatkov za vse odjemalce; varnost in poslovna pravila so samo na strežniku; neodvisni izdaji frontenda in backenda.
-* Slabo: dva projekta za vzdrževanje; potrebna sta nastavitev CORS in prenos žetona pri vsaki zahtevi.
+* Dobro, ker imajo vsi odjemalci eno pot do podatkov, varnost in poslovna pravila pa so samo na strežniku. Frontend in backend lahko izdajamo neodvisno.
+* Slabo, ker moramo vzdrževati dva projekta, poleg tega je treba nastaviti CORS in pri vsaki zahtevi poslati žeton.

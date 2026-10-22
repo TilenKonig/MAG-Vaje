@@ -1,13 +1,10 @@
 # CockroachDB kot baza
 
-* Status: sprejeto
-* Datum: 20.10.2026
-
 ## Kontekst in problem
 
-Podatki delavnice (nalogi, računi, zaloga) so relacijski in zahtevajo transakcije. Baza mora biti zanesljiva in omogočati rast (replikacija, kasnejši prenos v oblak).
+Podatki delavnice, torej nalogi, računi in zaloga, so relacijski in zahtevajo transakcije. Baza mora biti zanesljiva in omogočati rast in kasnejši prenos v oblak.
 
-## Obravnavane alternative
+## Obravnavane možnosti
 
 * PostgreSQL
 * MySQL
@@ -15,9 +12,9 @@ Podatki delavnice (nalogi, računi, zaloga) so relacijski in zahtevajo transakci
 
 ## Odločitev
 
-Izbrana alternativa: CockroachDB, ker je relacijska baza z ACID transakcijami, vgrajeno replikacijo in horizontalnim skaliranjem, hkrati pa uporablja protokol PostgreSQL, zato v kodi ni posebnosti in je zamenjava baze možna. Omogoča tudi kasnejši prenos v CockroachDB Cloud.
+Izbrali smo možnost: CockroachDB, ker je relacijska baza z ACID transakcijami, vgrajeno replikacijo in horizontalnim skaliranjem. Uporablja protokol PostgreSQL, zato v kodi ni posebnosti in bi bila zamenjava baze še vedno možna. Omogoča tudi kasnejši prenos v CockroachDB Cloud. P.S: Rabim jo za eno drugo vajo :) 
 
 ## Posledice
 
-* Dobro: transakcije in dosledni podatki; možnost rasti in replikacije brez menjave baze; običajen JDBC gonilnik PostgreSQL.
-* Slabo: večja poraba virov kot pri PostgreSQL za enak obseg podatkov; manjša skupnost; nekatere funkcije PostgreSQL niso podprte.
+* Dobro, ker imamo transakcije in dosledne podatke. Baze ne bo treba menjati, če bomo želeli rast ali replikacijo, uporabimo pa lahko navaden JDBC gonilnik za PostgreSQL.
+* Slabo, ker porabi več virov kot PostgreSQL pri enakem obsegu podatkov. Skupnost je manjša in nekatere funkcije PostgreSQL niso podprte. Porabi pa tudi kar dosti prostora na disku. 

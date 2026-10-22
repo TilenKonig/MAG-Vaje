@@ -3,10 +3,10 @@ services:
     build: ./db
     image: tilenkonig/delavnica-db:1.0.1 # probi ce dela
     environment:
-      COCKROACH_DATABASE: ${DB_NAME} # vrednost iz .env
+      COCKROACH_DATABASE: ${DB_NAME} 
     ports:
-      - "26257:26257" # SQL
-      - "8081:8081"   # DB Console
+      - "26257:26257" 
+      - "8081:8081"
     volumes:
       - db-data:/cockroach/cockroach-data
 
@@ -19,7 +19,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:26257/${DB_NAME}?sslmode=disable
     ports:
-      - "8080:8080" # REST API in Swagger
+      - "8080:8080" 
 
 volumes:
   db-data:

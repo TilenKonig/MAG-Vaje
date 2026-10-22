@@ -1,22 +1,22 @@
-# [Kratek naslov odločitve]
-
-* Status: [predlagano | sprejeto | zamenjano z [ADR-NNNN](NNNN-naslov.md)]
-* Datum: [dd.mm.yyyy]
+# {kratek naslov, ki opisuje rešen problem in izbrano rešitev}
 
 ## Kontekst in problem
 
-[Kateri problem rešujemo in zakaj je odločitev potrebna?]
+{Opišite kontekst in problem, na primer v dveh ali treh stavkih ali v obliki ponazoritvene zgodbe. Problem lahko zapišete tudi kot vprašanje. Dodate lahko povezave na table za sodelovanje ali sisteme za upravljanje zahtevkov. Obseg odločitve naj bo jasen, na primer tako, da navedete ali pokažete na arhitekturne elemente (komponente, povezave ...).}
 
-## Obravnavane alternative
+## Obravnavane možnosti
 
-* [Alternativa 1]
-* [Alternativa 2]
+* {naziv možnosti 1}
+* {naziv možnosti 2}
+* {naziv možnosti 3}
+* …
 
 ## Odločitev
 
-Izbrana alternativa: [alternativa], ker [utemeljitev].
+Izbrana možnost: "{naziv možnosti 1}", ker {utemeljitev, na primer: edina možnost, ki izpolni izločitveni kriterij | razreši silnico {silnica} | … | se najbolje izkaže (glej spodaj)}.
 
 ## Posledice
 
-* Dobro: [pozitivna posledica]
-* Slabo: [negativna posledica]
+* Dobro, ker {pozitivna posledica, na primer izboljšanje ene ali več želenih kakovosti …}
+* Slabo, ker {negativna posledica, na primer poslabšanje ene ali več želenih kakovosti …}
+* …
