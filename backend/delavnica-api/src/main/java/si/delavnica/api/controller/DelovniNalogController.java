@@ -7,14 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import si.delavnica.api.dto.NalogDto;
 import si.delavnica.api.model.DelovniNalog;
+import si.delavnica.api.model.DelovniNalog.Stanje;
 import si.delavnica.api.model.PostavkaNaloga;
 import si.delavnica.api.model.Racun;
 import si.delavnica.api.service.NalogService;
 import java.util.List;
 import java.util.UUID;
 
-// Kontroler samo sprejme zahtevek in ga preda servisu, poslovna pravila so v NalogService.
 @RestController
 @RequestMapping("/api/nalogi")
 @RequiredArgsConstructor
@@ -24,21 +25,16 @@ public class DelovniNalogController {
 
 	private final NalogService nalogi;
 
-	// --- CRUD (SOA vaja) ---
 
 	@GetMapping
-	List<DelovniNalog> getAll(@AuthenticationPrincipal Jwt jwt) {
-		return nalogi.getAll(jwt);
+	List<NalogDto> getAll(@RequestParam(required = false) Stanje stanje, @RequestParam(required = false) String registrska,
+			@RequestParam(required = false) UUID strankaId, @AuthenticationPrincipal Jwt jwt) {
+		return nalogi.getAll(stanje, registrska, strankaId, jwt);
 	}
 
 	@GetMapping("/{id}")
-	DelovniNalog getById(@PathVariable UUID id, @AuthenticationPrincipal Jwt jwt) {
+	NalogDto getById(@PathVariable UUID id, @AuthenticationPrincipal Jwt jwt) {
 		return nalogi.getById(id, jwt);
-	}
-
-	@GetMapping("/{id}/postavke")
-	List<PostavkaNaloga> postavkeNaloga(@PathVariable UUID id, @AuthenticationPrincipal Jwt jwt) {
-		return nalogi.postavkeNaloga(id, jwt);
 	}
 
 	@PostMapping

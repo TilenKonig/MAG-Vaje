@@ -1,6 +1,6 @@
 # 05 Uporabniške zgodbe
 
-Zgodbe pokrivajo vse MVP funkcionalnosti (F1–F7) iz [02-funkcionalnosti-in-obseg.md](02-funkcionalnosti-in-obseg.md) ter F8 in F11.
+Zgodbe pokrivajo vse MVP funkcionalnosti (F1–F7) iz [02-funkcionalnosti-in-obseg.md](02-funkcionalnosti-in-obseg.md) ter F8, F9, F10, F11, F12, F13, F14 in F15.
 Vloge: **Mehanik**, **Stranka**, **Vodja**.
 
 ## Pregled
@@ -22,6 +22,12 @@ Vloge: **Mehanik**, **Stranka**, **Vodja**.
 | UZ-13 | F7 | Stranka | Pregled svojih računov |
 | UZ-14 | F11 | Vodja | Označitev računa kot plačanega |
 | UZ-15 | F8 | Vodja | Upravljanje kataloga delov |
+| UZ-16 | F13 | Vodja, Mehanik | Iskanje in filtriranje nalogov |
+| UZ-17 | F9 | Vodja | Naročanje delov z enim klikom |
+| UZ-18 | F12 | Vodja | Predlog naročila |
+| UZ-19 | F10 | Vodja | Opomnik za servis |
+| UZ-20 | F14 | Stranka, Vodja | Zahtevek za servis |
+| UZ-21 | F15 | Vodja | Poročilo delavnice |
 
 ---
 
@@ -190,3 +196,69 @@ Acceptance criteria:
 3. Šifra, ki že obstaja, je zavrnjena.
 4. Spremenjena zaloga se pri naslednjem dodajanju dela na nalog že upošteva.
 5. Mehanik katalog vidi, ga pa ne more spreminjati (PUT/POST/DELETE vrne 403).
+
+## UZ-16 Iskanje in filtriranje nalogov
+**Funkcionalnost:** F13 · **Vloga:** Vodja, Mehanik
+
+Kot vodja ali mehanik želim naloge filtrirati po stanju, registrski številki in stranki, da hitro najdem nalog, ki ga iščem.
+
+Acceptance criteria:
+1. Filtre po stanju, registrski številki in stranki je mogoče uporabiti posamično in skupaj.
+2. Iskanje po registrski številki ne razlikuje velikih in malih črk ter išče po delu niza.
+3. Mehanik tudi s filtrom vidi samo naloge, dodeljene njemu.
+4. Če ni zadetkov, se prikaže sporočilo "Ni nalogov".
+
+## UZ-17 Naročanje delov z enim klikom
+**Funkcionalnost:** F9 · **Vloga:** Vodja
+
+Kot vodja želim del naročiti z enim klikom, da se zaloga dopolni brez ročnega urejanja.
+
+Acceptance criteria:
+1. Pri vsakem delu je gumb "Naroči", ki zahteva količino večjo od 0.
+2. Dobava je simulirana: naročilo je nekaj sekund v stanju V_DOSTAVI, nato se zaloga poveča za naročeno količino.
+3. Po dostavi se seznam delov osveži in prikaže novo zalogo.
+4. Mehanik in stranka naročila ne moreta oddati (API vrne 403).
+
+## UZ-18 Predlog naročila
+**Funkcionalnost:** F12 · **Vloga:** Vodja
+
+Kot vodja želim videti predlog naročila za dele pod minimalno zalogo, da jih naročim z enim klikom.
+
+Acceptance criteria:
+1. Predlog vsebuje samo dele, katerih zaloga je pod minimalno zalogo.
+2. Pri vsakem delu je prikazana manjkajoča količina (minimalna zaloga minus zaloga).
+3. Gumb "Naroči vse" odda naročila z enako logiko kot UZ-17.
+4. Če ni nobenega dela pod minimalno zalogo, se prikaže sporočilo "Zaloga je zadostna".
+
+## UZ-19 Opomnik za servis
+**Funkcionalnost:** F10 · **Vloga:** Vodja
+
+Kot vodja želim videti vozila, ki že več kot 12 mesecev niso imela naloga, da stranke opomnim na servis.
+
+Acceptance criteria:
+1. Seznam vsebuje vozila, ki v zadnjih 12 mesecih niso imela naloga.
+2. Vsaka vrstica prikazuje registrsko številko, znamko, model in lastnika.
+3. Vozilo z nalogom, mlajšim od 12 mesecev, ni na seznamu.
+4. Mehanik in stranka seznama ne moreta poklicati (API vrne 403).
+
+## UZ-20 Zahtevek za servis
+**Funkcionalnost:** F14 · **Vloga:** Stranka, Vodja
+
+Kot stranka želim oddati zahtevek za servis svojega vozila, da vodja zanj odpre delovni nalog.
+
+Acceptance criteria:
+1. Stranka izbere svoje vozilo in vpiše opis težave (ne sme biti prazen); za tuje vozilo API vrne 404.
+2. Vodja vidi vse zahtevke, stranka samo svoje.
+3. Vodja iz zahtevka ustvari delovni nalog in izbere mehanika; zahtevek dobi stanje PRETVORJEN.
+4. Že pretvorjenega zahtevka ni mogoče pretvoriti znova.
+
+## UZ-21 Poročilo delavnice
+**Funkcionalnost:** F15 · **Vloga:** Vodja
+
+Kot vodja želim videti prihodek po mesecih in 5 najpogosteje porabljenih delov, da ocenim poslovanje delavnice.
+
+Acceptance criteria:
+1. Poročilo prikazuje vsoto zneskov računov po mesecih.
+2. Poročilo prikazuje največ 5 delov z največjo skupno porabljeno količino, padajoče.
+3. Vsote se ujemajo z računi in postavkami v bazi.
+4. Mehanik in stranka poročila ne moreta poklicati (API vrne 403).

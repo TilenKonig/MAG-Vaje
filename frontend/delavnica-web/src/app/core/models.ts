@@ -41,9 +41,23 @@ export interface DelovniNalog {
 
 export interface PostavkaNaloga {
   id: string;
-  del: RezervniDel;
+  del: string;
   kolicina: number;
   cena: number;
+}
+
+// nalog za prikaz: vozilo, mehanik in postavke so že združeni (NalogDto)
+export interface Nalog {
+  id: string;
+  registrska: string;
+  vozilo: string;
+  mehanik: string;
+  opis: string;
+  opisDela?: string;
+  stanje: Stanje;
+  ureDela: number;
+  datumOdprtja: string;
+  postavke: PostavkaNaloga[];
 }
 
 export interface Racun {
