@@ -10,13 +10,15 @@ import { UporabnikiService } from '../../core/api/uporabniki.service';
 import { VozilaService } from '../../core/api/vozila.service';
 import { AuthService } from '../../core/auth.service';
 import { Stanje } from '../../core/models';
+import { PageHeader } from '../../shared/page-header/page-header';
+import { StatusBadge } from '../../shared/status-badge/status-badge';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
 const prazenNalog = { voziloId: '', mehanikId: '', opis: '' };
 const prazenDel = { delId: '', kolicina: 1 };
 
 @Component({
-  imports: [FormRoot, FormField, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [FormRoot, FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader, StatusBadge],
   templateUrl: './nalogi.html',
   styleUrl: './nalogi.scss',
 })

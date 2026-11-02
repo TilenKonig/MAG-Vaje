@@ -6,14 +6,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UporabnikiService } from '../../core/api/uporabniki.service';
 import { Uporabnik } from '../../core/models';
+import { PageHeader } from '../../shared/page-header/page-header';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
 const prazno = { ime: '', priimek: '', email: '', geslo: '', telefon: '', vloga: 'STRANKA' };
 
 @Component({
-  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader],
   templateUrl: './uporabniki.html',
-  styleUrl: './uporabniki.scss',
 })
 export class Uporabniki {
   private uporabnikiApi = inject(UporabnikiService);

@@ -1,7 +1,11 @@
-mat-card {
+.login {
   max-width: 360px;
   margin: 64px auto;
-  padding: 16px;
+  border-top: 4px solid var(--steel);
+}
+
+.subtitle {
+  color: var(--mat-sys-on-surface-variant);
 }
 
 form {

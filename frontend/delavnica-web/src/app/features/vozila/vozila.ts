@@ -8,14 +8,14 @@ import { AuthService } from '../../core/auth.service';
 import { UporabnikiService } from '../../core/api/uporabniki.service';
 import { VozilaService } from '../../core/api/vozila.service';
 import { Vozilo } from '../../core/models';
+import { PageHeader } from '../../shared/page-header/page-header';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
 const prazno = { lastnikId: '', znamka: '', model: '', letnik: 2020, registrska: '' };
 
 @Component({
-  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader],
   templateUrl: './vozila.html',
-  styleUrl: './vozila.scss',
 })
 export class Vozila {
   private vozilaApi = inject(VozilaService);
