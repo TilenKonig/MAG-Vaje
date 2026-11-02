@@ -7,14 +7,14 @@ import { MatInputModule } from '@angular/material/input';
 import { DeliService } from '../../core/api/deli.service';
 import { AuthService } from '../../core/auth.service';
 import { RezervniDel } from '../../core/models';
+import { PageHeader } from '../../shared/page-header/page-header';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
 const prazno = { sifra: '', naziv: '', cena: 0, zaloga: 0, minZaloga: 0 };
 
 @Component({
-  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader],
   templateUrl: './deli.html',
-  styleUrl: './deli.scss',
 })
 export class Deli {
   private deliApi = inject(DeliService);

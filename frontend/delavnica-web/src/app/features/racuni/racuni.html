@@ -1,24 +1,26 @@
-<h2>Računi</h2>
+<app-page-header naslov="Računi" />
 
-<table>
-  <tr><th>Datum</th><th>Vozilo</th><th>Težava</th><th>Znesek</th><th>Plačan</th></tr>
-  @for (racun of racuni.value(); track racun.id) {
-    <tr>
-      <td>{{ racun.datum }}</td>
-      <td>{{ racun.nalog.vozilo.registrska }}</td>
-      <td>{{ racun.nalog.opis }}</td>
-      <td>{{ racun.znesek }} €</td>
-      <td>
-        @if (racun.placan) {
-          Da
-        } @else if (jeVodja()) {
-          <button mat-button (click)="oznaciPlacan(racun)">Označi kot plačan</button>
-        } @else {
-          Ne
-        }
-      </td>
-    </tr>
-  } @empty {
-    <tr><td colspan="5">Ni računov.</td></tr>
-  }
-</table>
+<div class="panel">
+  <table>
+    <tr><th>Datum</th><th>Vozilo</th><th>Težava</th><th class="number">Znesek</th><th class="actions">Plačan</th></tr>
+    @for (racun of racuni.value(); track racun.id) {
+      <tr>
+        <td>{{ racun.datum }}</td>
+        <td><span class="plate">{{ racun.nalog.vozilo.registrska }}</span></td>
+        <td>{{ racun.nalog.opis }}</td>
+        <td class="number">{{ racun.znesek }} €</td>
+        <td class="actions">
+          @if (racun.placan) {
+            Da
+          } @else if (jeVodja()) {
+            <button mat-button (click)="oznaciPlacan(racun)">Označi kot plačan</button>
+          } @else {
+            Ne
+          }
+        </td>
+      </tr>
+    } @empty {
+      <tr><td class="empty" colspan="5">Ni računov.</td></tr>
+    }
+  </table>
+</div>

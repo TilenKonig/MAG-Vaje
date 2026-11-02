@@ -1,27 +1,30 @@
-<div class="glava">
-  <h2>Vozila</h2>
+<app-page-header naslov="Vozila">
   @if (jeVodja()) {
     <button mat-flat-button (click)="dodaj(obrazecPredloga)">Dodaj vozilo</button>
   }
-</div>
+</app-page-header>
 
-<table>
-  <tr>
-    <th>Registrska</th><th>Vozilo</th><th>Letnik</th><th>Lastnik</th>
-    @if (jeVodja()) { <th></th> }
-  </tr>
-  @for (vozilo of vozila.value(); track vozilo.id) {
+<div class="panel">
+  <table>
     <tr>
-      <td>{{ vozilo.registrska }}</td>
-      <td>{{ vozilo.znamka }} {{ vozilo.model }}</td>
-      <td>{{ vozilo.letnik }}</td>
-      <td>{{ vozilo.lastnik.ime }} {{ vozilo.lastnik.priimek }}</td>
-      @if (jeVodja()) {
-        <td><button mat-button (click)="izbrisi(vozilo)">Izbriši</button></td>
-      }
+      <th>Registrska</th><th>Vozilo</th><th class="number">Letnik</th><th>Lastnik</th>
+      @if (jeVodja()) { <th></th> }
     </tr>
-  }
-</table>
+    @for (vozilo of vozila.value(); track vozilo.id) {
+      <tr>
+        <td><span class="plate">{{ vozilo.registrska }}</span></td>
+        <td>{{ vozilo.znamka }} {{ vozilo.model }}</td>
+        <td class="number">{{ vozilo.letnik }}</td>
+        <td>{{ vozilo.lastnik.ime }} {{ vozilo.lastnik.priimek }}</td>
+        @if (jeVodja()) {
+          <td class="actions"><button mat-button (click)="izbrisi(vozilo)">Izbriši</button></td>
+        }
+      </tr>
+    } @empty {
+      <tr><td class="empty" colspan="5">Ni vozil.</td></tr>
+    }
+  </table>
+</div>
 
 <!-- polja obrazca, prikaže jih okno -->
 <ng-template #obrazecPredloga>

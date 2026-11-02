@@ -1,16 +1,15 @@
-<mat-card>
-  <mat-card-header><h2>Prijava</h2></mat-card-header>
-  <mat-card-content>
-    <form [formRoot]="obrazec">
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput type="email" [formField]="obrazec.email" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Geslo</mat-label>
-        <input matInput type="password" [formField]="obrazec.geslo" />
-      </mat-form-field>
-      <button mat-flat-button [disabled]="obrazec().invalid()">Prijava</button>
-    </form>
-  </mat-card-content>
-</mat-card>
+<div class="panel panel-body login">
+  <h2>Delavnica</h2>
+  <p class="subtitle">Prijavi se z delovnim emailom.</p>
+  <form [formRoot]="obrazec">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [formField]="obrazec.email" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Geslo</mat-label>
+      <input matInput type="password" [formField]="obrazec.geslo" />
+    </mat-form-field>
+    <button mat-flat-button [disabled]="obrazec().invalid()">Prijava</button>
+  </form>
+</div>

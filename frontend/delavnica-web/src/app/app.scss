@@ -1,11 +1,24 @@
-mat-toolbar {
+.toolbar {
+  gap: var(--space);
+  overflow-x: auto;
+}
+
+.brand {
+  margin-right: calc(var(--space) * 2);
+  font-weight: 600;
+}
+
+.nav {
+  display: flex;
+  flex: 1;
   gap: 4px;
 }
 
-.razmik {
-  flex: 1;
+.active {
+  box-shadow: inset 0 -3px var(--mat-sys-primary-fixed-dim);
 }
 
-.aktivna {
-  font-weight: bold;
+.role {
+  font: var(--mat-sys-label-medium);
+  opacity: 0.8;
 }

@@ -10,13 +10,15 @@ import { UporabnikiService } from '../../core/api/uporabniki.service';
 import { VozilaService } from '../../core/api/vozila.service';
 import { AuthService } from '../../core/auth.service';
 import { Stanje } from '../../core/models';
+import { PageHeader } from '../../shared/page-header/page-header';
+import { StatusBadge } from '../../shared/status-badge/status-badge';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
 const prazenNalog = { voziloId: '', mehanikId: '', opis: '' };
 const prazenDel = { delId: '', kolicina: 1 };
 
 @Component({
-  imports: [FormRoot, FormField, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [FormRoot, FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader, StatusBadge],
   templateUrl: './nalogi.html',
   styleUrl: './nalogi.scss',
 })
@@ -33,15 +35,16 @@ export class Nalogi {
   protected readonly jeOsebje = this.auth.jeOsebje;
 
   // --- podatki iz strežnika ---
-  protected readonly nalogi = this.nalogiApi.seznam();
+  protected readonly filter = signal({ stanje: '', registrska: '', strankaId: '' });
+  protected readonly nalogi = this.nalogiApi.iskanje(this.filter);
   protected readonly izbranId = signal<string | null>(null);
   protected readonly izbran = computed(() => this.nalogi.value().find((nalog) => nalog.id === this.izbranId()));
-  protected readonly postavke = this.nalogiApi.postavke(this.izbranId);
   // vozila vidi za izbiro samo vodja, dele samo osebje (stranka za to nima pravic)
   protected readonly vozila = this.vozilaApi.seznam(this.jeVodja);
   protected readonly deli = this.deliApi.seznam(this.jeOsebje);
   // mehanike za dodelitev naloga vidi samo vodja
   private readonly uporabniki = this.uporabnikiApi.seznam(this.jeVodja);
+  protected readonly stranke = computed(() => this.uporabniki.value().filter((u) => u.vloga === 'STRANKA'));
   protected readonly mehaniki = computed(() => this.uporabniki.value().filter((u) => u.vloga === 'MEHANIK'));
 
   // --- obrazec: nov nalog (v oknu) ---
@@ -68,6 +71,10 @@ export class Nalogi {
     min(pot.kolicina, 1);
   });
 
+  protected nastaviFilter(polje: 'stanje' | 'registrska' | 'strankaId', vrednost: string) {
+    this.filter.update((f) => ({ ...f, [polje]: vrednost }));
+  }
+
   protected odpriNalog(predloga: TemplateRef<unknown>) {
     odpriObrazec(this.dialog, {
       naslov: 'Nov delovni nalog',
@@ -92,7 +99,7 @@ export class Nalogi {
     }).subscribe((shranjeno) => {
       this.obrazecDel().reset({ ...prazenDel });
       if (shranjeno) {
-        this.postavke.reload();
+        this.nalogi.reload();
         this.deli.reload(); // zaloga se je zmanjšala
       }
     });
