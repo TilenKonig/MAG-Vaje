@@ -3,6 +3,7 @@ package si.delavnica.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import si.delavnica.api.dto.NarociloDto;
 import si.delavnica.api.model.RezervniDel;
 import si.delavnica.api.service.RezervniDelService;
 import java.util.List;
@@ -40,5 +41,11 @@ public class RezervniDelController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void izbrisi(@PathVariable UUID id) {
 		deli.izbrisi(id);
+	}
+
+	@PostMapping("/{id}/narocilo")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	void naroci(@PathVariable UUID id, @RequestBody NarociloDto narocilo) {
+		deli.naroci(id, narocilo.kolicina());
 	}
 }
