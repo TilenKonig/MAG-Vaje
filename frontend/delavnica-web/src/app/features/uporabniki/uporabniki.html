@@ -2,25 +2,21 @@
   <button mat-flat-button (click)="dodaj(obrazecPredloga)">Dodaj uporabnika</button>
 </app-page-header>
 
-<div class="panel">
-  <table>
-    <tr><th>Ime</th><th>Email</th><th>Telefon</th><th>Vloga</th><th></th></tr>
-    @for (uporabnik of uporabniki.value(); track uporabnik.id) {
-      <tr>
-        <td>{{ uporabnik.ime }} {{ uporabnik.priimek }}</td>
-        <td>{{ uporabnik.email }}</td>
-        <td>{{ uporabnik.telefon }}</td>
-        <td>{{ uporabnik.vloga }}</td>
-        <td class="actions">
-          <button mat-button (click)="uredi(obrazecPredloga, uporabnik)">Uredi</button>
-          <button mat-button (click)="izbrisi(uporabnik)">Izbriši</button>
-        </td>
-      </tr>
-    } @empty {
-      <tr><td class="empty" colspan="5">Ni uporabnikov.</td></tr>
-    }
-  </table>
-</div>
+<table>
+  <tr><th>Ime</th><th>Email</th><th>Telefon</th><th>Vloga</th><th></th></tr>
+  @for (uporabnik of uporabniki.value(); track uporabnik.id) {
+    <tr>
+      <td>{{ uporabnik.ime }} {{ uporabnik.priimek }}</td>
+      <td>{{ uporabnik.email }}</td>
+      <td>{{ uporabnik.telefon }}</td>
+      <td>{{ uporabnik.vloga }}</td>
+      <td>
+        <button mat-button (click)="uredi(obrazecPredloga, uporabnik)">Uredi</button>
+        <button mat-button (click)="izbrisi(uporabnik)">Izbriši</button>
+      </td>
+    </tr>
+  }
+</table>
 
 <!-- polja obrazca, prikaže jih okno -->
 <ng-template #obrazecPredloga>
