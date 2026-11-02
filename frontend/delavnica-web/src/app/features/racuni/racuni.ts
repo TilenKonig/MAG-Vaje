@@ -3,11 +3,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { RacuniService } from '../../core/api/racuni.service';
 import { AuthService } from '../../core/auth.service';
 import { Racun } from '../../core/models';
+import { PageHeader } from '../../shared/page-header/page-header';
 
 @Component({
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, PageHeader],
   templateUrl: './racuni.html',
-  styleUrl: './racuni.scss',
 })
 export class Racuni {
   private racuniApi = inject(RacuniService);

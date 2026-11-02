@@ -1,26 +1,151 @@
 @use '@angular/material' as mat;
+@use './theme-colors' as theme;
 
+// Jeklo: edina barva izven generiranih palet (zgornja vrstica, rob tablice)
+$steel: #263845;
+
+// Theme
 html {
   @include mat.theme((
-    color: mat.$azure-palette,
-    typography: system-ui,
+    color: (
+      primary: theme.$primary-palette,
+      tertiary: theme.$tertiary-palette,
+    ),
+    typography: 'IBM Plex Sans',
     density: -1 // pri -2 in manj Material skrije labele polj
+  ));
+
+  --space: 8px;
+  --radius: 4px;
+  --content-width: 1200px;
+  --steel: #{$steel};
+}
+
+.toolbar {
+  @include mat.toolbar-overrides((
+    container-background-color: var(--steel),
+    container-text-color: var(--mat-sys-on-primary),
+  ));
+  @include mat.button-overrides((
+    text-label-text-color: var(--mat-sys-on-primary),
+    text-state-layer-color: var(--mat-sys-on-primary),
   ));
 }
 
+// Base
 body {
   margin: 0;
-  background: var(--mat-sys-surface);
+  background: var(--mat-sys-surface-container);
   color: var(--mat-sys-on-surface);
-  font-family: system-ui, sans-serif;
+  font: var(--mat-sys-body-medium);
 }
 
-main { padding: 16px; max-width: 1100px; margin: 0 auto; }
-h2 { margin: 8px 0; }
-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--mat-sys-outline-variant); }
-tr.klik { cursor: pointer; }
-tr.klik:hover, tr.izbran { background: var(--mat-sys-surface-container); }
-.glava { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-form.vrstica { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
-.nizka { color: var(--mat-sys-error); font-weight: bold; }
+h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+h3 {
+  margin: 0 0 var(--space);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+  text-align: left;
+  padding: calc(var(--space) * 1.25) calc(var(--space) * 1.5);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+th {
+  background: var(--mat-sys-surface-container-low);
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 600;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--mat-sys-primary);
+  outline-offset: 2px;
+}
+
+// Layout
+main {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: calc(var(--space) * 3) calc(var(--space) * 2);
+}
+
+.panel {
+  background: var(--mat-sys-surface);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: var(--radius);
+  margin-bottom: calc(var(--space) * 3);
+  overflow-x: auto; 
+}
+
+.panel-body {
+  padding: calc(var(--space) * 2);
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space);
+  align-items: center;
+}
+
+// Utilities
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background: var(--mat-sys-surface-container-low);
+}
+
+.selected {
+  background: var(--mat-sys-primary-container);
+  box-shadow: inset 3px 0 var(--mat-sys-primary);
+}
+
+.number,
+.actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.empty {
+  color: var(--mat-sys-on-surface-variant);
+  font-style: italic;
+}
+
+.low-stock {
+  color: var(--mat-sys-error);
+  font-weight: 600;
+}
+
+// Registrska tablica: bel okvir z modrim levim trakom (EU tablica)
+.plate {
+  display: inline-block;
+  padding: 1px 6px 1px 4px;
+  border: 1px solid var(--steel);
+  border-left: 5px solid var(--mat-sys-primary);
+  border-radius: 3px;
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--steel);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}

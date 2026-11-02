@@ -1,13 +1,16 @@
 // širine veljajo samo za vrstični obrazec urejanja, polja v oknu so čez celotno širino
-.vrstica mat-form-field {
+.form-row mat-form-field {
   width: 160px;
 }
 
-.vrstica mat-form-field.siroko {
+.form-row .wide {
   width: 320px;
 }
 
-section {
-  border-top: 1px solid var(--mat-sys-outline-variant);
-  padding-top: 8px;
+.filters {
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.detail-actions {
+  margin-top: calc(var(--space) * 2);
 }

@@ -1,8 +1,51 @@
-<div class="glava">
-  <h2>Delovni nalogi</h2>
+<app-page-header naslov="Delovni nalogi">
   @if (jeVodja()) {
     <button mat-flat-button (click)="odpriNalog(nalogPredloga)">Odpri nalog</button>
   }
+</app-page-header>
+
+<div class="panel">
+  <div class="panel-body form-row filters">
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Stanje</mat-label>
+      <select matNativeControl (change)="nastaviFilter('stanje', $any($event.target).value)">
+        <option value="">Vsa</option>
+        @for (stanje of stanja; track stanje) {
+          <option [value]="stanje">{{ stanje }}</option>
+        }
+      </select>
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Registrska</mat-label>
+      <input matInput (input)="nastaviFilter('registrska', $any($event.target).value)" />
+    </mat-form-field>
+    @if (jeVodja()) {
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Stranka</mat-label>
+        <select matNativeControl (change)="nastaviFilter('strankaId', $any($event.target).value)">
+          <option value="">Vse</option>
+          @for (stranka of stranke(); track stranka.id) {
+            <option [value]="stranka.id">{{ stranka.ime }} {{ stranka.priimek }}</option>
+          }
+        </select>
+      </mat-form-field>
+    }
+  </div>
+
+  <table>
+    <tr><th>Datum</th><th>Vozilo</th><th>Mehanik</th><th>Težava</th><th>Stanje</th></tr>
+    @for (nalog of nalogi.value(); track nalog.id) {
+      <tr class="clickable" [class.selected]="nalog.id === izbranId()" (click)="izbranId.set(nalog.id)">
+        <td>{{ nalog.datumOdprtja }}</td>
+        <td><span class="plate">{{ nalog.registrska }}</span></td>
+        <td>{{ nalog.mehanik }}</td>
+        <td>{{ nalog.opis }}</td>
+        <td><app-status-badge [stanje]="nalog.stanje" /></td>
+      </tr>
+    } @empty {
+      <tr><td class="empty" colspan="5">Ni nalogov za izbrane filtre.</td></tr>
+    }
+  </table>
 </div>
 
 <div class="vrstica">
@@ -53,7 +96,7 @@
     <p>Težava: {{ nalog.opis }}</p>
 
     @if (jeOsebje() && nalog.stanje !== 'OBRACUNAN') {
-      <form class="vrstica" [formRoot]="obrazecUrejanje">
+      <form class="form-row" [formRoot]="obrazecUrejanje">
         <mat-form-field>
           <mat-label>Stanje</mat-label>
           <select matNativeControl [formField]="obrazecUrejanje.stanje">
@@ -62,22 +105,16 @@
             }
           </select>
         </mat-form-field>
-        <mat-form-field class="siroko"><mat-label>Opis opravljenega dela</mat-label><input matInput [formField]="obrazecUrejanje.opisDela" /></mat-form-field>
+        <mat-form-field class="wide"><mat-label>Opis opravljenega dela</mat-label><input matInput [formField]="obrazecUrejanje.opisDela" /></mat-form-field>
         <mat-form-field><mat-label>Ure dela</mat-label><input matInput type="number" [formField]="obrazecUrejanje.ureDela" /></mat-form-field>
         <button mat-flat-button>Shrani</button>
       </form>
     } @else {
-      <p>Stanje: {{ nalog.stanje }}</p>
       <p>Opravljeno delo: {{ nalog.opisDela }}</p>
       <p>Ure dela: {{ nalog.ureDela }}</p>
     }
 
-    <div class="glava">
-      <h4>Uporabljeni deli</h4>
-      @if (jeOsebje() && nalog.stanje !== 'OBRACUNAN') {
-        <button mat-flat-button (click)="odpriDel(delPredloga)">Dodaj del</button>
-      }
-    </div>
+    <h3>Uporabljeni deli</h3>
     <table>
       <tr><th>Del</th><th>Količina</th><th>Cena</th></tr>
       @for (postavka of nalog.postavke; track postavka.id) {
@@ -87,16 +124,21 @@
           <td>{{ postavka.cena }} €</td>
         </tr>
       } @empty {
-        <tr><td colspan="3">Ni dodanih delov.</td></tr>
+        <tr><td class="empty" colspan="3">Ni dodanih delov.</td></tr>
       }
     </table>
 
-    @if (jeVodja()) {
-      @if (nalog.stanje === 'ZAKLJUCEN') {
-        <button mat-flat-button (click)="izdajRacun()">Izdaj račun</button>
+    <div class="form-row detail-actions">
+      @if (jeOsebje() && nalog.stanje !== 'OBRACUNAN') {
+        <button mat-stroked-button (click)="odpriDel(delPredloga)">Dodaj del</button>
       }
-      <button mat-button (click)="izbrisi()">Izbriši nalog</button>
-    }
+      @if (jeVodja()) {
+        @if (nalog.stanje === 'ZAKLJUCEN') {
+          <button mat-flat-button (click)="izdajRacun()">Izdaj račun</button>
+        }
+        <button mat-button (click)="izbrisi()">Izbriši nalog</button>
+      }
+    </div>
   </section>
 }
 
