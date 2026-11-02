@@ -2,7 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, TemplateRef, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 
 export interface ObrazecDialogData {
   naslov: string;
@@ -21,11 +21,16 @@ export class ObrazecDialog {
   protected readonly podatki = inject<ObrazecDialogData>(MAT_DIALOG_DATA);
   private okno = inject(MatDialogRef<ObrazecDialog>);
 
-  protected shrani() {
-    this.podatki.shrani().subscribe(() => this.okno.close(true));
+  protected async shrani() {
+    try {
+      await firstValueFrom(this.podatki.shrani());
+      this.okno.close(true);
+    } catch {
+      // napako je že prikazal interceptor, okno ostane odprto
+    }
   }
 }
 
 export function odpriObrazec(dialog: MatDialog, podatki: ObrazecDialogData) {
-  return dialog.open(ObrazecDialog, { data: podatki, width: '480px' }).afterClosed();
+  return firstValueFrom(dialog.open(ObrazecDialog, { data: podatki, width: '480px' }).afterClosed());
 }
