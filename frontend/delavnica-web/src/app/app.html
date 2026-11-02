@@ -1,17 +1,18 @@
 @if (auth.vloga(); as vloga) {
-  <mat-toolbar>
-    <span>Delavnica</span>
-    <a mat-button routerLink="/nalogi" routerLinkActive="aktivna">Nalogi</a>
-    <a mat-button routerLink="/vozila" routerLinkActive="aktivna">Vozila</a>
-    @if (auth.jeOsebje()) {
-      <a mat-button routerLink="/deli" routerLinkActive="aktivna">Rezervni deli</a>
-    }
-    <a mat-button routerLink="/racuni" routerLinkActive="aktivna">Računi</a>
-    @if (auth.jeVodja()) {
-      <a mat-button routerLink="/uporabniki" routerLinkActive="aktivna">Uporabniki</a>
-    }
-    <span class="razmik"></span>
-    <span>{{ vloga }}</span>
+  <mat-toolbar class="toolbar">
+    <span class="brand">Delavnica</span>
+    <nav class="nav">
+      <a mat-button routerLink="/nalogi" routerLinkActive="active">Nalogi</a>
+      <a mat-button routerLink="/vozila" routerLinkActive="active">Vozila</a>
+      @if (auth.jeOsebje()) {
+        <a mat-button routerLink="/deli" routerLinkActive="active">Rezervni deli</a>
+      }
+      <a mat-button routerLink="/racuni" routerLinkActive="active">Računi</a>
+      @if (auth.jeVodja()) {
+        <a mat-button routerLink="/uporabniki" routerLinkActive="active">Uporabniki</a>
+      }
+    </nav>
+    <span class="role">{{ vloga }}</span>
     <button mat-button (click)="auth.odjava()">Odjava</button>
   </mat-toolbar>
 }
