@@ -37,6 +37,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(zahteve -> zahteve
 						.requestMatchers("/api/prijava", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/uporabniki/**").hasRole("VODJA")
+						.requestMatchers(HttpMethod.GET, "/api/porocilo").hasRole("VODJA")
 						.requestMatchers(HttpMethod.GET, "/api/deli/**").hasAnyRole("MEHANIK", "VODJA")
 						.requestMatchers(HttpMethod.GET, "/api/**").authenticated() // stranka je v kontrolerjih omejena na svoje
 						.requestMatchers(HttpMethod.PUT, "/api/nalogi/*").hasAnyRole("MEHANIK", "VODJA")
