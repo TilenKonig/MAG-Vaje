@@ -48,48 +48,6 @@
   </table>
 </div>
 
-<div class="vrstica">
-  <mat-form-field>
-    <mat-label>Stanje</mat-label>
-    <select matNativeControl (change)="nastaviFilter('stanje', $any($event.target).value)">
-      <option value="">Vsa</option>
-      @for (stanje of stanja; track stanje) {
-        <option [value]="stanje">{{ stanje }}</option>
-      }
-    </select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Registrska</mat-label>
-    <input matInput (input)="nastaviFilter('registrska', $any($event.target).value)" />
-  </mat-form-field>
-  @if (jeVodja()) {
-    <mat-form-field>
-      <mat-label>Stranka</mat-label>
-      <select matNativeControl (change)="nastaviFilter('strankaId', $any($event.target).value)">
-        <option value="">Vse</option>
-        @for (stranka of stranke(); track stranka.id) {
-          <option [value]="stranka.id">{{ stranka.ime }} {{ stranka.priimek }}</option>
-        }
-      </select>
-    </mat-form-field>
-  }
-</div>
-
-<table>
-  <tr><th>Datum</th><th>Vozilo</th><th>Mehanik</th><th>Težava</th><th>Stanje</th></tr>
-  @for (nalog of nalogi.value(); track nalog.id) {
-    <tr class="klik" [class.izbran]="nalog.id === izbranId()" (click)="izbranId.set(nalog.id)">
-      <td>{{ nalog.datumOdprtja }}</td>
-      <td>{{ nalog.registrska }}</td>
-      <td>{{ nalog.mehanik }}</td>
-      <td>{{ nalog.opis }}</td>
-      <td>{{ nalog.stanje }}</td>
-    </tr>
-  } @empty {
-    <tr><td colspan="5">Ni nalogov.</td></tr>
-  }
-</table>
-
 @if (izbran(); as nalog) {
   <section>
     <h3>{{ nalog.vozilo }}, {{ nalog.registrska }}</h3>
