@@ -67,3 +67,10 @@ export interface Racun {
   datum: string;
   placan: boolean;
 }
+
+export interface Porocilo {
+  prihodekPoMesecih: { leto: number; mesec: number; prihodek: number }[];
+  prodaniDeli: { naziv: string; kolicina: number }[];
+  opravljeneUre: number;
+  profit: number;
+}

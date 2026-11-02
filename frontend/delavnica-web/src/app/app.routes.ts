@@ -13,6 +13,7 @@ export const routes: Routes = [
       { path: 'deli', canActivate: [vlogaGuard('MEHANIK', 'VODJA')], loadComponent: () => import('./features/deli/deli').then((m) => m.Deli) },
       { path: 'racuni', loadComponent: () => import('./features/racuni/racuni').then((m) => m.Racuni) },
       { path: 'uporabniki', canActivate: [vlogaGuard('VODJA')], loadComponent: () => import('./features/uporabniki/uporabniki').then((m) => m.Uporabniki) },
+      { path: 'porocilo', canActivate: [vlogaGuard('VODJA')], loadComponent: () => import('./features/porocilo/porocilo').then((m) => m.Porocilo) },
       { path: '', pathMatch: 'full', redirectTo: 'nalogi' },
     ],
   },
