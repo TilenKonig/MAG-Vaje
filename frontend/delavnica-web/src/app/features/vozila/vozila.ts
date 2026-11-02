@@ -1,3 +1,4 @@
+import { firstValueFrom } from 'rxjs';
 import { Component, TemplateRef, computed, inject, signal } from '@angular/core';
 import { FormField, form, min, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -39,8 +40,8 @@ export class Vozila {
     required(pot.registrska);
   });
 
-  protected dodaj(predloga: TemplateRef<unknown>) {
-    odpriObrazec(this.dialog, {
+  protected async dodaj(predloga: TemplateRef<unknown>) {
+    const shranjeno = await odpriObrazec(this.dialog, {
       naslov: 'Novo vozilo',
       predloga,
       veljaven: () => !this.obrazec().invalid(),
@@ -48,13 +49,13 @@ export class Vozila {
         const { lastnikId, ...vozilo } = this.model();
         return this.vozilaApi.ustvari({ ...vozilo, lastnik: { id: lastnikId } });
       },
-    }).subscribe((shranjeno) => {
-      this.obrazec().reset({ ...prazno });
-      if (shranjeno) this.vozila.reload();
     });
+    this.obrazec().reset({ ...prazno });
+    if (shranjeno) this.vozila.reload();
   }
 
-  protected izbrisi(vozilo: Vozilo) {
-    this.vozilaApi.izbrisi(vozilo.id).subscribe(() => this.vozila.reload());
+  protected async izbrisi(vozilo: Vozilo) {
+    await firstValueFrom(this.vozilaApi.izbrisi(vozilo.id));
+    this.vozila.reload();
   }
 }

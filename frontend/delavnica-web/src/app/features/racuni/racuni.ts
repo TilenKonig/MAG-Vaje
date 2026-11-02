@@ -1,3 +1,4 @@
+import { firstValueFrom } from 'rxjs';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RacuniService } from '../../core/api/racuni.service';
@@ -16,7 +17,8 @@ export class Racuni {
   protected readonly jeVodja = this.auth.jeVodja;
   protected readonly racuni = this.racuniApi.seznam();
 
-  protected oznaciPlacan(racun: Racun) {
-    this.racuniApi.posodobi(racun.id, { placan: true }).subscribe(() => this.racuni.reload());
+  protected async oznaciPlacan(racun: Racun) {
+    await firstValueFrom(this.racuniApi.posodobi(racun.id, { placan: true }));
+    this.racuni.reload();
   }
 }
