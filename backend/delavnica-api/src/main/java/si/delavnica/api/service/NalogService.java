@@ -6,6 +6,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import si.delavnica.api.dto.NalogDto;
+import si.delavnica.api.dto.PostavkaDto;
 import si.delavnica.api.model.DelovniNalog;
 import si.delavnica.api.model.DelovniNalog.Stanje;
 import si.delavnica.api.model.PostavkaNaloga;
@@ -35,17 +37,29 @@ public class NalogService {
 	private final NalogDostop dostop;
 	private final PopustService popusti;
 
-	public List<DelovniNalog> getAll(Jwt jwt) {
-		return dostop.vidni(jwt);
+	// filtri so neobvezni in se uporabijo nad nalogi, ki jih uporabnik sme videti
+	public List<NalogDto> getAll(Stanje stanje, String registrska, UUID strankaId, Jwt jwt) {
+		return dostop.vidni(jwt).stream()
+				.filter(n -> stanje == null || n.getStanje() == stanje)
+				.filter(n -> registrska == null || n.getVozilo().getRegistrska().toLowerCase().contains(registrska.trim().toLowerCase()))
+				.filter(n -> strankaId == null || n.getVozilo().getLastnik().getId().equals(strankaId))
+				.map(this::vDto)
+				.toList();
 	}
 
-	public DelovniNalog getById(UUID id, Jwt jwt) {
-		return dostop.poisci(id, jwt);
+	public NalogDto getById(UUID id, Jwt jwt) {
+		return vDto(dostop.poisci(id, jwt)); // 404, če nalog ni vidan
 	}
 
-	public List<PostavkaNaloga> postavkeNaloga(UUID id, Jwt jwt) {
-		dostop.poisci(id, jwt); // 404, če nalog ni vidan
-		return postavke.findByNalogId(id);
+	private NalogDto vDto(DelovniNalog n) {
+		var vozilo = n.getVozilo();
+		var mehanik = n.getMehanik();
+		var deli = postavke.findByNalogId(n.getId()).stream()
+				.map(p -> new PostavkaDto(p.getId(), p.getDel().getNaziv(), p.getKolicina(), p.getCena()))
+				.toList();
+		return new NalogDto(n.getId(), vozilo.getRegistrska(), vozilo.getZnamka() + " " + vozilo.getModel(),
+				mehanik.getIme() + " " + mehanik.getPriimek(), n.getOpis(), n.getOpisDela(), n.getStanje(), n.getUreDela(),
+				n.getDatumOdprtja(), deli);
 	}
 
 	// dodeliti ga je mogoče samo uporabniku z vlogo mehanik

@@ -6,9 +6,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.time.Instant;
 import java.util.UUID;
 
-// Skupno polje vseh entitet: id (UUID), ki ga ustvari baza.
+// Skupna polja vseh entitet: id (UUID) in časovna žiga (kazalec za inkrementalni vnos v podatkovno jezero).
 @MappedSuperclass
 @Getter
 @Setter
@@ -17,4 +20,10 @@ public abstract class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
+
+	@CreationTimestamp
+	private Instant createdAt;
+
+	@UpdateTimestamp
+	private Instant updatedAt;
 }
