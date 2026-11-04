@@ -19,6 +19,11 @@ export interface Vozilo {
   registrska: string;
 }
 
+export interface PredlogNarocila {
+  del: RezervniDel;
+  manjka: number;
+}
+
 export interface RezervniDel {
   id: string;
   sifra: string;
