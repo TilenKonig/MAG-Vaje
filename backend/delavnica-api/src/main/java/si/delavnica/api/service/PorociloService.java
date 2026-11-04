@@ -2,6 +2,7 @@ package si.delavnica.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import si.delavnica.api.dto.MesecniPrihodekDto;
 import si.delavnica.api.dto.PorociloDto;
 import si.delavnica.api.repository.DelovniNalogRepository;
 import si.delavnica.api.repository.PostavkaNalogaRepository;
@@ -20,10 +21,7 @@ public class PorociloService {
 
 	public PorociloDto pripravi() {
 		var prihodekPoMesecih = racuni.prihodekPoMesecih();
-		var prihodek = BigDecimal.ZERO;
-		for (var mesec : prihodekPoMesecih) {
-			prihodek = prihodek.add(mesec.prihodek());
-		}
+		var prihodek = prihodekPoMesecih.stream().map(MesecniPrihodekDto::prihodek).reduce(BigDecimal.ZERO, BigDecimal::add);
 		var profit = prihodek.subtract(postavke.vrednostDelov().multiply(NABAVNI_DELEZ));
 		return new PorociloDto(prihodekPoMesecih, postavke.prodaniDeli(), nalogi.opravljeneUre(), profit);
 	}
