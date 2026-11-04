@@ -21,10 +21,10 @@ public class DelovniNalog extends BaseEntity {
 
 	@NotNull
 	@ManyToOne
-	private Uporabnik mehanik; 
+	private Uporabnik mehanik;
 
 	@NotBlank
-	private String opis; 
+	private String opis;
 
 	private String opisDela;
 
