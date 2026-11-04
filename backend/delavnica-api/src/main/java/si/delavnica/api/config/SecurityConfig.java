@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -55,7 +56,7 @@ public class SecurityConfig {
 
 	@Bean
 	SecretKey jwtKljuc(@Value("${jwt.secret}") String skrivnost) {
-		return new SecretKeySpec(skrivnost.getBytes(), "HmacSHA256");
+		return new SecretKeySpec(skrivnost.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
 	}
 
 	@Bean

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
 
-// V Swagger UI doda gumb Authorize: vanj prilepiš žeton iz POST /api/prijava, nato ga pošlje pri vsakem klicu.
 @Configuration
 @OpenAPIDefinition(
 		info = @Info(title = "Mehanična delavnica API", version = "1.0"),
