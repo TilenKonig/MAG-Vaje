@@ -26,6 +26,8 @@ export class Deli {
   protected readonly jeVodja = inject(AuthService).jeVodja;
   protected readonly deli = this.deliApi.seznam();
 
+  protected readonly predlog = this.deliApi.predlog(this.jeVodja);
+
   protected readonly vDostavi = signal(new Set<string>());
   protected readonly kolicina = signal({ kolicina: 1 });
   protected readonly narociloObrazec = form(this.kolicina, (pot) => min(pot.kolicina, 1));
@@ -52,6 +54,12 @@ export class Deli {
 
   protected async izbrisi(del: RezervniDel) {
     await firstValueFrom(this.deliApi.izbrisi(del.id));
+    this.deli.reload();
+  }
+
+  protected async narociVse() {
+    await Promise.all(this.predlog.value().map((p) => firstValueFrom(this.deliApi.naroci(p.del.id, p.manjka))));
+    this.predlog.reload();
     this.deli.reload();
   }
 

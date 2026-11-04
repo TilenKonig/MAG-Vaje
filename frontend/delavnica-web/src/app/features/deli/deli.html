@@ -29,6 +29,23 @@
   </table>
 </div>
 
+@if (jeVodja() && predlog.value().length) {
+  <div class="panel">
+    <table>
+      <caption>Predlog naročila</caption>
+      <tr><th>Šifra</th><th>Naziv</th><th class="number">Zaloga</th><th class="number">Min. zaloga</th><th class="number">Manjka</th></tr>
+      @for (p of predlog.value(); track p.del.id) {
+        <tr>
+          <td>{{ p.del.sifra }}</td><td>{{ p.del.naziv }}</td>
+          <td class="number">{{ p.del.zaloga }}</td><td class="number">{{ p.del.minZaloga }}</td>
+          <td class="number">{{ p.manjka }}</td>
+        </tr>
+      }
+    </table>
+    <button mat-flat-button (click)="narociVse()">Naroči vse</button>
+  </div>
+}
+
 <!-- polja obrazca, prikaže jih okno -->
 <ng-template #obrazecPredloga>
   <mat-form-field><mat-label>Šifra</mat-label><input matInput [formField]="obrazec.sifra" /></mat-form-field>

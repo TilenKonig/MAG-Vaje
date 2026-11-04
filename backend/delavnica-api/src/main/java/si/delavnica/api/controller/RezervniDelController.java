@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import si.delavnica.api.dto.NarociloDto;
+import si.delavnica.api.dto.PredlogNarocilaDto;
 import si.delavnica.api.model.RezervniDel;
 import si.delavnica.api.service.RezervniDelService;
 import java.util.List;
@@ -19,6 +20,11 @@ public class RezervniDelController {
 	@GetMapping
 	List<RezervniDel> getAll() {
 		return deli.getAll();
+	}
+
+	@GetMapping("/predlog-narocila")
+	List<PredlogNarocilaDto> predlogNarocila() {
+		return deli.predlogNarocila();
 	}
 
 	@GetMapping("/{id}")

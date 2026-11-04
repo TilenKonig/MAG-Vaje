@@ -7,11 +7,13 @@ spring:
     username: root
   jpa:
     hibernate:
-      ddl-auto: update # Hibernate sam ustvari tabele
+      ddl-auto: update
   web:
     error:
-      include-message: always # sporočila napak (npr. "Premalo zaloge") se vrnejo odjemalcu
-
+      include-message: always
 # Skrivnost za podpis JWT (samo za razvoj, najmanj 32 znakov)
 jwt:
   secret: "delavnica-razvojna-skrivnost-32-znakov!"
+
+logiranje:
+  branje: true
