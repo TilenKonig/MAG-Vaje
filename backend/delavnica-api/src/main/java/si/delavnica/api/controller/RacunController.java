@@ -28,8 +28,7 @@ public class RacunController {
 		return racuni.getById(id, jwt);
 	}
 
-	// vodja lahko spremeni samo plačano (F11)
-	@PutMapping("/{id}")
+		@PutMapping("/{id}")
 	Racun posodobi(@PathVariable UUID id, @RequestBody Racun novi) {
 		return racuni.nastaviPlacan(id, novi.isPlacan());
 	}

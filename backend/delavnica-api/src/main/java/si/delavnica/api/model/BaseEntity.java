@@ -1,5 +1,6 @@
 package si.delavnica.api.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,6 +23,7 @@ public abstract class BaseEntity {
 	private UUID id;
 
 	@CreationTimestamp
+	@Column(updatable = false) // PUT pošlje entiteto brez tega polja, ob posodobitvi ga ne smemo prepisati z null
 	private Instant createdAt;
 
 	@UpdateTimestamp

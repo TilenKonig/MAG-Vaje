@@ -1,12 +1,12 @@
 package si.delavnica.api.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import si.delavnica.api.dto.DodajDelDto;
 import si.delavnica.api.dto.NalogDto;
 import si.delavnica.api.model.DelovniNalog;
 import si.delavnica.api.model.DelovniNalog.Stanje;
@@ -21,10 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DelovniNalogController {
 
-	record DodajDel(UUID delId, @Min(1) int kolicina) {}
-
 	private final NalogService nalogi;
-
 
 	@GetMapping
 	List<NalogDto> getAll(@RequestParam(required = false) Stanje stanje, @RequestParam(required = false) String registrska,
@@ -54,11 +51,10 @@ public class DelovniNalogController {
 		nalogi.izbrisi(id, jwt);
 	}
 
-	// --- poslovna pravila ---
-
+	
 	@PostMapping("/{id}/postavke")
 	@ResponseStatus(HttpStatus.CREATED)
-	PostavkaNaloga dodajDel(@PathVariable UUID id, @RequestBody @Valid DodajDel zahtevek, @AuthenticationPrincipal Jwt jwt) {
+	PostavkaNaloga dodajDel(@PathVariable UUID id, @RequestBody @Valid DodajDelDto zahtevek, @AuthenticationPrincipal Jwt jwt) {
 		return nalogi.dodajDel(id, zahtevek.delId(), zahtevek.kolicina(), jwt);
 	}
 

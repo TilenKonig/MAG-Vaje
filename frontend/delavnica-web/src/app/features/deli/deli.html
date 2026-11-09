@@ -17,7 +17,10 @@
         <td class="number">{{ del.cena }} €</td>
         <td class="number" [class.low-stock]="del.zaloga <= del.minZaloga">{{ del.zaloga }}</td>
         @if (jeVodja()) {
-          <td class="actions"><button mat-button (click)="izbrisi(del)">Izbriši</button></td>
+          <td class="actions">
+            @if (vDostavi().has(del.id)) { <span>V dostavi</span> }
+            @else { <button mat-button (click)="naroci(del, narociloPredloga)">Naroči</button> }
+            <button mat-button (click)="izbrisi(del)">Izbriši</button></td>
         }
       </tr>
     } @empty {
@@ -26,6 +29,23 @@
   </table>
 </div>
 
+@if (jeVodja() && predlog.value().length) {
+  <div class="panel">
+    <table>
+      <caption>Predlog naročila</caption>
+      <tr><th>Šifra</th><th>Naziv</th><th class="number">Zaloga</th><th class="number">Min. zaloga</th><th class="number">Manjka</th></tr>
+      @for (p of predlog.value(); track p.del.id) {
+        <tr>
+          <td>{{ p.del.sifra }}</td><td>{{ p.del.naziv }}</td>
+          <td class="number">{{ p.del.zaloga }}</td><td class="number">{{ p.del.minZaloga }}</td>
+          <td class="number">{{ p.manjka }}</td>
+        </tr>
+      }
+    </table>
+    <button mat-flat-button (click)="narociVse()">Naroči vse</button>
+  </div>
+}
+
 <!-- polja obrazca, prikaže jih okno -->
 <ng-template #obrazecPredloga>
   <mat-form-field><mat-label>Šifra</mat-label><input matInput [formField]="obrazec.sifra" /></mat-form-field>
@@ -33,4 +53,8 @@
   <mat-form-field><mat-label>Cena (€)</mat-label><input matInput type="number" [formField]="obrazec.cena" /></mat-form-field>
   <mat-form-field><mat-label>Zaloga (kosov)</mat-label><input matInput type="number" [formField]="obrazec.zaloga" /></mat-form-field>
   <mat-form-field><mat-label>Minimalna zaloga</mat-label><input matInput type="number" [formField]="obrazec.minZaloga" /></mat-form-field>
+</ng-template>
+
+<ng-template #narociloPredloga>
+  <mat-form-field><mat-label>Količina</mat-label><input matInput type="number" [formField]="narociloObrazec.kolicina" /></mat-form-field>
 </ng-template>

@@ -1,3 +1,4 @@
+import { firstValueFrom } from 'rxjs';
 import { Component, TemplateRef, inject, signal } from '@angular/core';
 import { FormField, email, form, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,10 +41,10 @@ export class Uporabniki {
     this.odpri(predloga, u);
   }
 
-  private odpri(predloga: TemplateRef<unknown>, u?: Uporabnik) {
+  private async odpri(predloga: TemplateRef<unknown>, u?: Uporabnik) {
     this.urejanjeId.set(u?.id ?? null);
     this.obrazec().reset(u ? { ...prazno, ...u, telefon: u.telefon ?? '' } : { ...prazno });
-    odpriObrazec(this.dialog, {
+    const shranjeno = await odpriObrazec(this.dialog, {
       naslov: u ? 'Urejanje uporabnika' : 'Nov uporabnik',
       predloga,
       veljaven: () => !this.obrazec().invalid(),
@@ -52,13 +53,13 @@ export class Uporabniki {
         const podatki = geslo ? { ...telo, geslo } : telo;
         return u ? this.uporabnikiApi.posodobi(u.id, podatki) : this.uporabnikiApi.ustvari(podatki);
       },
-    }).subscribe((shranjeno) => {
-      this.obrazec().reset({ ...prazno });
-      if (shranjeno) this.uporabniki.reload();
     });
+    this.obrazec().reset({ ...prazno });
+    if (shranjeno) this.uporabniki.reload();
   }
 
-  protected izbrisi(uporabnik: Uporabnik) {
-    this.uporabnikiApi.izbrisi(uporabnik.id).subscribe(() => this.uporabniki.reload());
+  protected async izbrisi(uporabnik: Uporabnik) {
+    await firstValueFrom(this.uporabnikiApi.izbrisi(uporabnik.id));
+    this.uporabniki.reload();
   }
 }

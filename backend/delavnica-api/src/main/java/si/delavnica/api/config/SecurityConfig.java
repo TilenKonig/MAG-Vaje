@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -37,6 +38,8 @@ public class SecurityConfig {
 				.authorizeHttpRequests(zahteve -> zahteve
 						.requestMatchers("/api/prijava", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/uporabniki/**").hasRole("VODJA")
+						.requestMatchers(HttpMethod.GET, "/api/porocilo").hasRole("VODJA")
+						.requestMatchers(HttpMethod.GET, "/api/deli/predlog-narocila").hasRole("VODJA")
 						.requestMatchers(HttpMethod.GET, "/api/deli/**").hasAnyRole("MEHANIK", "VODJA")
 						.requestMatchers(HttpMethod.GET, "/api/**").authenticated() // stranka je v kontrolerjih omejena na svoje
 						.requestMatchers(HttpMethod.PUT, "/api/nalogi/*").hasAnyRole("MEHANIK", "VODJA")
@@ -53,7 +56,7 @@ public class SecurityConfig {
 
 	@Bean
 	SecretKey jwtKljuc(@Value("${jwt.secret}") String skrivnost) {
-		return new SecretKeySpec(skrivnost.getBytes(), "HmacSHA256");
+		return new SecretKeySpec(skrivnost.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
 	}
 
 	@Bean

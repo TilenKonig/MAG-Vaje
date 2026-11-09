@@ -19,6 +19,11 @@ export interface Vozilo {
   registrska: string;
 }
 
+export interface PredlogNarocila {
+  del: RezervniDel;
+  manjka: number;
+}
+
 export interface RezervniDel {
   id: string;
   sifra: string;
@@ -66,4 +71,11 @@ export interface Racun {
   znesek: number;
   datum: string;
   placan: boolean;
+}
+
+export interface Porocilo {
+  prihodekPoMesecih: { leto: number; mesec: number; prihodek: number }[];
+  prodaniDeli: { naziv: string; kolicina: number }[];
+  opravljeneUre: number;
+  profit: number;
 }

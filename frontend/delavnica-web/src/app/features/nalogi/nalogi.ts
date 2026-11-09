@@ -1,3 +1,4 @@
+import { firstValueFrom } from 'rxjs';
 import { Component, TemplateRef, computed, inject, linkedSignal, signal } from '@angular/core';
 import { FormField, FormRoot, form, min, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -75,8 +76,8 @@ export class Nalogi {
     this.filter.update((f) => ({ ...f, [polje]: vrednost }));
   }
 
-  protected odpriNalog(predloga: TemplateRef<unknown>) {
-    odpriObrazec(this.dialog, {
+  protected async odpriNalog(predloga: TemplateRef<unknown>) {
+    const shranjeno = await odpriObrazec(this.dialog, {
       naslov: 'Nov delovni nalog',
       predloga,
       veljaven: () => !this.obrazecNalog().invalid(),
@@ -84,39 +85,38 @@ export class Nalogi {
         const { voziloId, mehanikId, opis } = this.modelNalog();
         return this.nalogiApi.ustvari({ opis, vozilo: { id: voziloId }, mehanik: { id: mehanikId } });
       },
-    }).subscribe((shranjeno) => {
-      this.obrazecNalog().reset({ ...prazenNalog });
-      if (shranjeno) this.nalogi.reload();
     });
+    this.obrazecNalog().reset({ ...prazenNalog });
+    if (shranjeno) this.nalogi.reload();
   }
 
-  protected odpriDel(predloga: TemplateRef<unknown>) {
-    odpriObrazec(this.dialog, {
+  protected async odpriDel(predloga: TemplateRef<unknown>) {
+    const shranjeno = await odpriObrazec(this.dialog, {
       naslov: 'Dodaj rezervni del na nalog',
       predloga,
       veljaven: () => !this.obrazecDel().invalid(),
       shrani: () => this.nalogiApi.dodajDel(this.izbranId()!, this.modelDel()),
-    }).subscribe((shranjeno) => {
-      this.obrazecDel().reset({ ...prazenDel });
-      if (shranjeno) {
-        this.nalogi.reload();
-        this.deli.reload(); // zaloga se je zmanjšala
-      }
     });
-  }
-
-  private shrani() {
-    this.nalogiApi.posodobi(this.izbranId()!, this.modelUrejanje()).subscribe(() => this.nalogi.reload());
-  }
-
-  protected izdajRacun() {
-    this.nalogiApi.izdajRacun(this.izbranId()!).subscribe(() => this.nalogi.reload());
-  }
-
-  protected izbrisi() {
-    this.nalogiApi.izbrisi(this.izbranId()!).subscribe(() => {
-      this.izbranId.set(null);
+    this.obrazecDel().reset({ ...prazenDel });
+    if (shranjeno) {
       this.nalogi.reload();
-    });
+      this.deli.reload(); // zaloga se je zmanjšala
+    }
+  }
+
+  private async shrani() {
+    await firstValueFrom(this.nalogiApi.posodobi(this.izbranId()!, this.modelUrejanje()));
+    this.nalogi.reload();
+  }
+
+  protected async izdajRacun() {
+    await firstValueFrom(this.nalogiApi.izdajRacun(this.izbranId()!));
+    this.nalogi.reload();
+  }
+
+  protected async izbrisi() {
+    await firstValueFrom(this.nalogiApi.izbrisi(this.izbranId()!));
+    this.izbranId.set(null);
+    this.nalogi.reload();
   }
 }

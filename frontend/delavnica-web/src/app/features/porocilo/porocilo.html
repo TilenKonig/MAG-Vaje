@@ -1,0 +1,27 @@
+<app-page-header naslov="Poročilo" />
+
+@if (porocilo.value(); as p) {
+  <div class="panel">
+    <table>
+      <tr><th>Mesec</th><th class="number">Prihodek</th></tr>
+      @for (m of p.prihodekPoMesecih; track $index) {
+        <tr><td>{{ m.mesec }}/{{ m.leto }}</td><td class="number">{{ m.prihodek }} €</td></tr>
+      } @empty {
+        <tr><td class="empty" colspan="2">Ni računov.</td></tr>
+      }
+    </table>
+  </div>
+
+  <div class="panel">
+    <table>
+      <tr><th>Del</th><th class="number">Prodana količina</th></tr>
+      @for (d of p.prodaniDeli; track d.naziv) {
+        <tr><td>{{ d.naziv }}</td><td class="number">{{ d.kolicina }}</td></tr>
+      } @empty {
+        <tr><td class="empty" colspan="2">Ni prodanih delov.</td></tr>
+      }
+    </table>
+  </div>
+
+  <p>Opravljene ure dela: {{ p.opravljeneUre }} · Profit: {{ p.profit }} €</p>
+}

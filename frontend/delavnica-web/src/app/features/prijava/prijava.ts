@@ -1,3 +1,4 @@
+import { firstValueFrom } from 'rxjs';
 import { Component, inject, signal } from '@angular/core';
 import { FormField, FormRoot, form, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,11 +24,12 @@ export class Prijava {
       required(pot.email);
       required(pot.geslo);
     },
-    { submission: { action: async () => this.prijava() } },
+    { submission: { action: () => this.prijava() } },
   );
 
-  private prijava() {
+  private async prijava() {
     const { email, geslo } = this.model();
-    this.auth.prijava(email, geslo).subscribe(() => this.router.navigate(['/']));
+    await firstValueFrom(this.auth.prijava(email, geslo));
+    this.router.navigate(['/']);
   }
 }

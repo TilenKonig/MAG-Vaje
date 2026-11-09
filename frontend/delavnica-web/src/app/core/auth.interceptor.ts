@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, catchError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
 // Doda žeton v vsako zahtevo in na enem mestu prikaže napake strežnika.
@@ -19,7 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (zahteva, naprej) => {
         const sporocilo = napaka.status === 401 ? 'Napačen email ali geslo' : (napaka.error?.message ?? 'Napaka strežnika');
         snackBar.open(sporocilo, 'V redu', { duration: 4000 });
       }
-      return EMPTY; // napaka je že prikazana, uspešni del (subscribe) se ne izvede
+      return throwError(() => napaka); // klicatelj ne nadaljuje; napaka je že prikazana
     }),
   );
 };
