@@ -12,6 +12,9 @@ import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
 const prazno = { ime: '', priimek: '', email: '', geslo: '', telefon: '', vloga: 'STRANKA' };
 
+// +386 41 000 000 / 00386... -> 041000000; tuje številke dobijo samo odstranjene presledke/vezaje
+const slovenskiTelefon = (t: string) => t.replace(/[\s\-/]/g, '').replace(/^(\+|00)386/, '0');
+
 @Component({
   imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader],
   templateUrl: './uporabniki.html',
@@ -50,7 +53,8 @@ export class Uporabniki {
       veljaven: () => !this.obrazec().invalid(),
       shrani: () => {
         const { geslo, ...telo } = this.model();
-        const podatki = geslo ? { ...telo, geslo } : telo;
+        const osnova = { ...telo, telefon: slovenskiTelefon(telo.telefon) };
+        const podatki = geslo ? { ...osnova, geslo } : osnova;
         return u ? this.uporabnikiApi.posodobi(u.id, podatki) : this.uporabnikiApi.ustvari(podatki);
       },
     });
