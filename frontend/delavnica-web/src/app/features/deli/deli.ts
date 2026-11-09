@@ -3,11 +3,10 @@ import { Component, TemplateRef, inject, signal } from '@angular/core';
 import { FormField, form, min, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { DeliService } from '../../core/api/deli.service';
 import { AuthService } from '../../core/auth.service';
 import { RezervniDel } from '../../core/models';
+import { Polje } from '../../shared/polje/polje';
 import { PageHeader } from '../../shared/page-header/page-header';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
@@ -16,7 +15,7 @@ const ZAMIK_DOSTAVE_MS = 5000; // simulirana dobava
 const prazno = { sifra: '', naziv: '', cena: 0, zaloga: 0, minZaloga: 0 };
 
 @Component({
-  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader],
+  imports: [FormField, MatButtonModule, PageHeader, Polje],
   templateUrl: './deli.html',
 })
 export class Deli {

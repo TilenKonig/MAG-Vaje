@@ -18,9 +18,13 @@
         <td class="number" [class.low-stock]="del.zaloga <= del.minZaloga">{{ del.zaloga }}</td>
         @if (jeVodja()) {
           <td class="actions">
-            @if (vDostavi().has(del.id)) { <span>V dostavi</span> }
-            @else { <button mat-button (click)="naroci(del, narociloPredloga)">Naroči</button> }
-            <button mat-button (click)="izbrisi(del)">Izbriši</button></td>
+            @if (vDostavi().has(del.id)) {
+              <span>V dostavi</span>
+            } @else {
+              <button mat-button (click)="naroci(del, narociloPredloga)">Naroči</button>
+            }
+            <button mat-button (click)="izbrisi(del)">Izbriši</button>
+          </td>
         }
       </tr>
     } @empty {
@@ -48,13 +52,13 @@
 
 <!-- polja obrazca, prikaže jih okno -->
 <ng-template #obrazecPredloga>
-  <mat-form-field><mat-label>Šifra</mat-label><input matInput [formField]="obrazec.sifra" /></mat-form-field>
-  <mat-form-field><mat-label>Naziv</mat-label><input matInput [formField]="obrazec.naziv" /></mat-form-field>
-  <mat-form-field><mat-label>Cena (€)</mat-label><input matInput type="number" [formField]="obrazec.cena" /></mat-form-field>
-  <mat-form-field><mat-label>Zaloga (kosov)</mat-label><input matInput type="number" [formField]="obrazec.zaloga" /></mat-form-field>
-  <mat-form-field><mat-label>Minimalna zaloga</mat-label><input matInput type="number" [formField]="obrazec.minZaloga" /></mat-form-field>
+  <app-polje label="Šifra" [formField]="obrazec.sifra" />
+  <app-polje label="Naziv" [formField]="obrazec.naziv" />
+  <app-polje label="Cena (€)" type="number" [formField]="obrazec.cena" />
+  <app-polje label="Zaloga (kosov)" type="number" [formField]="obrazec.zaloga" />
+  <app-polje label="Minimalna zaloga" type="number" [formField]="obrazec.minZaloga" />
 </ng-template>
 
 <ng-template #narociloPredloga>
-  <mat-form-field><mat-label>Količina</mat-label><input matInput type="number" [formField]="narociloObrazec.kolicina" /></mat-form-field>
+  <app-polje label="Količina" type="number" [formField]="narociloObrazec.kolicina" />
 </ng-template>

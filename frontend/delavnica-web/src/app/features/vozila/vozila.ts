@@ -3,19 +3,19 @@ import { Component, TemplateRef, computed, inject, signal } from '@angular/core'
 import { FormField, form, min, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../core/auth.service';
 import { UporabnikiService } from '../../core/api/uporabniki.service';
 import { VozilaService } from '../../core/api/vozila.service';
 import { Vozilo } from '../../core/models';
+import { Polje } from '../../shared/polje/polje';
+import { Izbira } from '../../shared/izbira/izbira';
 import { PageHeader } from '../../shared/page-header/page-header';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
 const prazno = { lastnikId: '', znamka: '', model: '', letnik: 2020, registrska: '' };
 
 @Component({
-  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader],
+  imports: [FormField, MatButtonModule, PageHeader, Polje, Izbira],
   templateUrl: './vozila.html',
 })
 export class Vozila {
@@ -29,7 +29,9 @@ export class Vozila {
 
   // seznam uporabnikov (za izbiro lastnika) vidi samo vodja
   private uporabniki = this.uporabnikiApi.seznam(this.jeVodja);
-  protected readonly stranke = computed(() => this.uporabniki.value().filter((uporabnik) => uporabnik.vloga === 'STRANKA'));
+  protected readonly stranke = computed(() =>
+    this.uporabniki.value().filter((u) => u.vloga === 'STRANKA').map((u) => ({ vrednost: u.id, oznaka: `${u.ime} ${u.priimek}` })),
+  );
 
   private model = signal({ ...prazno });
   protected readonly obrazec = form(this.model, (pot) => {

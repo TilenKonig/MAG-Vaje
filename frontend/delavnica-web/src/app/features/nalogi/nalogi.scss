@@ -1,5 +1,7 @@
 // širine veljajo samo za vrstični obrazec urejanja, polja v oknu so čez celotno širino
-.form-row mat-form-field {
+.form-row mat-form-field,
+.form-row app-polje,
+.form-row app-izbira {
   width: 160px;
 }
 

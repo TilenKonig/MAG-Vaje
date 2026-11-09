@@ -20,17 +20,10 @@
 
 <!-- polja obrazca, prikaže jih okno -->
 <ng-template #obrazecPredloga>
-  <mat-form-field><mat-label>Ime</mat-label><input matInput [formField]="obrazec.ime" /></mat-form-field>
-  <mat-form-field><mat-label>Priimek</mat-label><input matInput [formField]="obrazec.priimek" /></mat-form-field>
-  <mat-form-field><mat-label>Email</mat-label><input matInput type="email" [formField]="obrazec.email" /></mat-form-field>
-  <mat-form-field><mat-label>{{ urejanjeId() ? 'Geslo (prazno = nespremenjeno)' : 'Geslo' }}</mat-label><input matInput type="password" [formField]="obrazec.geslo" /></mat-form-field>
-  <mat-form-field><mat-label>Telefon</mat-label><input matInput [formField]="obrazec.telefon" /></mat-form-field>
-  <mat-form-field>
-    <mat-label>Vloga</mat-label>
-    <select matNativeControl [formField]="obrazec.vloga">
-      @for (vloga of vloge; track vloga) {
-        <option [value]="vloga">{{ vloga }}</option>
-      }
-    </select>
-  </mat-form-field>
+  <app-polje label="Ime" [formField]="obrazec.ime" />
+  <app-polje label="Priimek" [formField]="obrazec.priimek" />
+  <app-polje label="Email" type="email" [formField]="obrazec.email" />
+  <app-polje [label]="urejanjeId() ? 'Geslo (prazno = nespremenjeno)' : 'Geslo'" type="password" [formField]="obrazec.geslo" />
+  <app-polje label="Telefon" [formField]="obrazec.telefon" />
+  <app-izbira label="Vloga" [moznosti]="vloge" [formField]="obrazec.vloga" />
 </ng-template>
