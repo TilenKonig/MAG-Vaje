@@ -3,10 +3,10 @@ import { Component, TemplateRef, inject, signal } from '@angular/core';
 import { FormField, email, form, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { UporabnikiService } from '../../core/api/uporabniki.service';
 import { Uporabnik } from '../../core/models';
+import { Polje } from '../../shared/polje/polje';
+import { Izbira } from '../../shared/izbira/izbira';
 import { PageHeader } from '../../shared/page-header/page-header';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
@@ -16,14 +16,14 @@ const prazno = { ime: '', priimek: '', email: '', geslo: '', telefon: '', vloga:
 const slovenskiTelefon = (t: string) => t.replace(/[\s\-/]/g, '').replace(/^(\+|00)386/, '0');
 
 @Component({
-  imports: [FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader],
+  imports: [FormField, MatButtonModule, PageHeader, Polje, Izbira],
   templateUrl: './uporabniki.html',
 })
 export class Uporabniki {
   private uporabnikiApi = inject(UporabnikiService);
   private dialog = inject(MatDialog);
 
-  protected readonly vloge = ['STRANKA', 'MEHANIK', 'VODJA'];
+  protected readonly vloge = ['STRANKA', 'MEHANIK', 'VODJA'].map((v) => ({ vrednost: v, oznaka: v }));
   protected readonly uporabniki = this.uporabnikiApi.seznam();
 
   private model = signal({ ...prazno });

@@ -11,6 +11,8 @@ import { UporabnikiService } from '../../core/api/uporabniki.service';
 import { VozilaService } from '../../core/api/vozila.service';
 import { AuthService } from '../../core/auth.service';
 import { Stanje } from '../../core/models';
+import { Polje } from '../../shared/polje/polje';
+import { Izbira } from '../../shared/izbira/izbira';
 import { PageHeader } from '../../shared/page-header/page-header';
 import { StatusBadge } from '../../shared/status-badge/status-badge';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
@@ -19,7 +21,7 @@ const prazenNalog = { voziloId: '', mehanikId: '', opis: '' };
 const prazenDel = { delId: '', kolicina: 1 };
 
 @Component({
-  imports: [FormRoot, FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader, StatusBadge],
+  imports: [FormRoot, FormField, MatButtonModule, MatFormFieldModule, MatInputModule, PageHeader, StatusBadge, Polje, Izbira],
   templateUrl: './nalogi.html',
   styleUrl: './nalogi.scss',
 })
@@ -46,7 +48,16 @@ export class Nalogi {
   // mehanike za dodelitev naloga vidi samo vodja
   private readonly uporabniki = this.uporabnikiApi.seznam(this.jeVodja);
   protected readonly stranke = computed(() => this.uporabniki.value().filter((u) => u.vloga === 'STRANKA'));
-  protected readonly mehaniki = computed(() => this.uporabniki.value().filter((u) => u.vloga === 'MEHANIK'));
+  protected readonly mehaniki = computed(() =>
+    this.uporabniki.value().filter((u) => u.vloga === 'MEHANIK').map((u) => ({ vrednost: u.id, oznaka: `${u.ime} ${u.priimek}` })),
+  );
+  protected readonly stanjaMoznosti = this.stanja.map((s) => ({ vrednost: s, oznaka: s }));
+  protected readonly voziloMoznosti = computed(() =>
+    this.vozila.value().map((v) => ({ vrednost: v.id, oznaka: `${v.registrska} (${v.znamka} ${v.model})` })),
+  );
+  protected readonly delMoznosti = computed(() =>
+    this.deli.value().map((d) => ({ vrednost: d.id, oznaka: `${d.naziv} (zaloga ${d.zaloga})` })),
+  );
 
   // --- obrazec: nov nalog (v oknu) ---
   private modelNalog = signal({ ...prazenNalog });

@@ -4,7 +4,7 @@
   <div class="panel">
     <table>
       <tr><th>Mesec</th><th class="number">Prihodek</th></tr>
-      @for (m of p.prihodekPoMesecih; track $index) {
+      @for (m of p.prihodekPoMesecih; track m.leto + '-' + m.mesec) {
         <tr><td>{{ m.mesec }}/{{ m.leto }}</td><td class="number">{{ m.prihodek }} €</td></tr>
       } @empty {
         <tr><td class="empty" colspan="2">Ni računov.</td></tr>

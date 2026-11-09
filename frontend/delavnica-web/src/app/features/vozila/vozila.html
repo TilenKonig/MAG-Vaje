@@ -28,17 +28,9 @@
 
 <!-- polja obrazca, prikaže jih okno -->
 <ng-template #obrazecPredloga>
-  <mat-form-field>
-    <mat-label>Lastnik</mat-label>
-    <select matNativeControl [formField]="obrazec.lastnikId">
-      <option value="" disabled>Izberi stranko</option>
-      @for (stranka of stranke(); track stranka.id) {
-        <option [value]="stranka.id">{{ stranka.ime }} {{ stranka.priimek }}</option>
-      }
-    </select>
-  </mat-form-field>
-  <mat-form-field><mat-label>Znamka</mat-label><input matInput [formField]="obrazec.znamka" /></mat-form-field>
-  <mat-form-field><mat-label>Model</mat-label><input matInput [formField]="obrazec.model" /></mat-form-field>
-  <mat-form-field><mat-label>Letnik</mat-label><input matInput type="number" [formField]="obrazec.letnik" /></mat-form-field>
-  <mat-form-field><mat-label>Registrska številka</mat-label><input matInput [formField]="obrazec.registrska" /></mat-form-field>
+  <app-izbira label="Lastnik" placeholder="Izberi stranko" [moznosti]="stranke()" [formField]="obrazec.lastnikId" />
+  <app-polje label="Znamka" [formField]="obrazec.znamka" />
+  <app-polje label="Model" [formField]="obrazec.model" />
+  <app-polje label="Letnik" type="number" [formField]="obrazec.letnik" />
+  <app-polje label="Registrska številka" [formField]="obrazec.registrska" />
 </ng-template>
