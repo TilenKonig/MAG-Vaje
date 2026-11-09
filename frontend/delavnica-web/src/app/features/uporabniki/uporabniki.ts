@@ -31,7 +31,7 @@ export class Uporabniki {
     email(pot.email);
     required(pot.geslo, { when: () => !this.urejanjeId() }); // pri urejanju prazno geslo ohrani staro
   });
-  private urejanjeId = signal<string | null>(null);
+  protected readonly urejanjeId = signal<string | null>(null);
 
   protected dodaj(predloga: TemplateRef<unknown>) {
     this.odpri(predloga);
