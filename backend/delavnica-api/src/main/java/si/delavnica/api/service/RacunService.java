@@ -10,7 +10,6 @@ import si.delavnica.api.repository.RacunRepository;
 import java.util.List;
 import java.util.UUID;
 
-// Računi nastanejo samo z izdajo iz naloga (NalogService.izdajRacun), zato se ustvari() in posodobi() iz CrudService ne uporabljata.
 @Service
 public class RacunService extends CrudService<Racun> {
 

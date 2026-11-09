@@ -10,7 +10,6 @@ import si.delavnica.api.repository.VoziloRepository;
 import java.util.List;
 import java.util.UUID;
 
-// Osnovni CRUD iz CrudService, dodano je samo omejevanje strank na njihova vozila.
 @Service
 public class VoziloService extends CrudService<Vozilo> {
 

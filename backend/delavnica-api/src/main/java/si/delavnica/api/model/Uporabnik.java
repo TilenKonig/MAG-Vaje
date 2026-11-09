@@ -15,7 +15,7 @@ public class Uporabnik extends BaseEntity {
 	@Column(unique = true)
 	private String email;
 
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // geslo se nikoli ne vrne
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String geslo;
 
 	private String ime;

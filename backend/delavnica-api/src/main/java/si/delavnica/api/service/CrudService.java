@@ -7,7 +7,6 @@ import si.delavnica.api.model.BaseEntity;
 import java.util.List;
 import java.util.UUID;
 
-// Skupni CRUD za vse entitete. Konkretni servis podeduje osnovo in doda ali prepiše samo svoja pravila.
 public abstract class CrudService<T extends BaseEntity> {
 
 	private final JpaRepository<T, UUID> repository;
