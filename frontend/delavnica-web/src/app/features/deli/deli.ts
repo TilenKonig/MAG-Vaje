@@ -1,12 +1,11 @@
 import { firstValueFrom, of } from 'rxjs';
-import { Component, TemplateRef, inject, signal } from '@angular/core';
-import { FormField, form, min, required } from '@angular/forms/signals';
+import { Component, inject, signal } from '@angular/core';
+import { form, min, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { DeliService } from '../../core/api/deli.service';
 import { AuthService } from '../../core/auth.service';
 import { RezervniDel } from '../../core/models';
-import { Polje } from '../../shared/polje/polje';
 import { PageHeader } from '../../shared/page-header/page-header';
 import { odpriObrazec } from '../../shared/obrazec-dialog/obrazec-dialog';
 
@@ -15,7 +14,7 @@ const ZAMIK_DOSTAVE_MS = 5000; // simulirana dobava
 const prazno = { sifra: '', naziv: '', cena: 0, zaloga: 0, minZaloga: 0 };
 
 @Component({
-  imports: [FormField, MatButtonModule, PageHeader, Polje],
+  imports: [MatButtonModule, PageHeader],
   templateUrl: './deli.html',
 })
 export class Deli {
@@ -40,11 +39,17 @@ export class Deli {
     min(pot.minZaloga, 0);
   });
 
-  protected async dodaj(predloga: TemplateRef<unknown>) {
+  protected async dodaj() {
     const shranjeno = await odpriObrazec(this.dialog, {
       naslov: 'Nov rezervni del',
-      predloga,
-      veljaven: () => !this.obrazec().invalid(),
+      obrazec: this.obrazec,
+      polja: [
+        { kljuc: 'sifra', oznaka: 'Šifra' },
+        { kljuc: 'naziv', oznaka: 'Naziv' },
+        { kljuc: 'cena', oznaka: 'Cena (€)', tip: 'number' },
+        { kljuc: 'zaloga', oznaka: 'Zaloga (kosov)', tip: 'number' },
+        { kljuc: 'minZaloga', oznaka: 'Minimalna zaloga', tip: 'number' },
+      ],
       shrani: () => this.deliApi.ustvari(this.model()),
     });
     this.obrazec().reset({ ...prazno });
@@ -62,11 +67,11 @@ export class Deli {
     this.deli.reload();
   }
 
-  protected async naroci(del: RezervniDel, predloga: TemplateRef<unknown>) {
+  protected async naroci(del: RezervniDel) {
     const potrjeno = await odpriObrazec(this.dialog, {
       naslov: `Naroči: ${del.naziv}`,
-      predloga,
-      veljaven: () => !this.narociloObrazec().invalid(),
+      obrazec: this.narociloObrazec,
+      polja: [{ kljuc: 'kolicina', oznaka: 'Količina', tip: 'number' }],
       shrani: () => of(null),
     });
     if (!potrjeno) return;

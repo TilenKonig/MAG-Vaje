@@ -1,6 +1,6 @@
 <app-page-header naslov="Delovni nalogi">
   @if (jeVodja()) {
-    <button mat-flat-button (click)="odpriNalog(nalogPredloga)">Odpri nalog</button>
+    <button mat-flat-button (click)="odpriNalog()">Odpri nalog</button>
   }
 </app-page-header>
 
@@ -55,9 +55,22 @@
 
     @if (jeOsebje() && nalog.stanje !== 'OBRACUNAN') {
       <form class="form-row" [formRoot]="obrazecUrejanje">
-        <app-izbira label="Stanje" [moznosti]="stanjaMoznosti" [formField]="obrazecUrejanje.stanje" />
-        <app-polje class="wide" label="Opis opravljenega dela" [formField]="obrazecUrejanje.opisDela" />
-        <app-polje label="Ure dela" type="number" [formField]="obrazecUrejanje.ureDela" />
+        <mat-form-field>
+          <mat-label>Stanje</mat-label>
+          <select matNativeControl [formField]="obrazecUrejanje.stanje">
+            @for (m of stanjaMoznosti; track m.vrednost) {
+              <option [value]="m.vrednost">{{ m.oznaka }}</option>
+            }
+          </select>
+        </mat-form-field>
+        <mat-form-field class="wide">
+          <mat-label>Opis opravljenega dela</mat-label>
+          <input matInput [formField]="obrazecUrejanje.opisDela" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ure dela</mat-label>
+          <input matInput type="number" [formField]="obrazecUrejanje.ureDela" />
+        </mat-form-field>
         <button mat-flat-button>Shrani</button>
       </form>
     } @else {
@@ -81,7 +94,7 @@
 
     <div class="form-row detail-actions">
       @if (jeOsebje() && nalog.stanje !== 'OBRACUNAN') {
-        <button mat-stroked-button (click)="odpriDel(delPredloga)">Dodaj del</button>
+        <button mat-stroked-button (click)="odpriDel()">Dodaj del</button>
       }
       @if (jeVodja()) {
         @if (nalog.stanje === 'ZAKLJUCEN') {
@@ -92,15 +105,3 @@
     </div>
   </section>
 }
-
-<!-- polja obrazcev, prikaže jih okno -->
-<ng-template #nalogPredloga>
-  <app-izbira label="Vozilo" placeholder="Izberi vozilo" [moznosti]="voziloMoznosti()" [formField]="obrazecNalog.voziloId" />
-  <app-izbira label="Mehanik" placeholder="Izberi mehanika" [moznosti]="mehaniki()" [formField]="obrazecNalog.mehanikId" />
-  <app-polje label="Opis težave" [formField]="obrazecNalog.opis" />
-</ng-template>
-
-<ng-template #delPredloga>
-  <app-izbira label="Rezervni del" placeholder="Izberi del" [moznosti]="delMoznosti()" [formField]="obrazecDel.delId" />
-  <app-polje label="Količina" type="number" [formField]="obrazecDel.kolicina" />
-</ng-template>

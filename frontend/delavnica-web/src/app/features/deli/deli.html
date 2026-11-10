@@ -1,6 +1,6 @@
 <app-page-header naslov="Rezervni deli">
   @if (jeVodja()) {
-    <button mat-flat-button (click)="dodaj(obrazecPredloga)">Dodaj del</button>
+    <button mat-flat-button (click)="dodaj()">Dodaj del</button>
   }
 </app-page-header>
 
@@ -21,7 +21,7 @@
             @if (vDostavi().has(del.id)) {
               <span>V dostavi</span>
             } @else {
-              <button mat-button (click)="naroci(del, narociloPredloga)">Naroči</button>
+              <button mat-button (click)="naroci(del)">Naroči</button>
             }
             <button mat-button (click)="izbrisi(del)">Izbriši</button>
           </td>
@@ -49,16 +49,3 @@
     <button mat-flat-button (click)="narociVse()">Naroči vse</button>
   </div>
 }
-
-<!-- polja obrazca, prikaže jih okno -->
-<ng-template #obrazecPredloga>
-  <app-polje label="Šifra" [formField]="obrazec.sifra" />
-  <app-polje label="Naziv" [formField]="obrazec.naziv" />
-  <app-polje label="Cena (€)" type="number" [formField]="obrazec.cena" />
-  <app-polje label="Zaloga (kosov)" type="number" [formField]="obrazec.zaloga" />
-  <app-polje label="Minimalna zaloga" type="number" [formField]="obrazec.minZaloga" />
-</ng-template>
-
-<ng-template #narociloPredloga>
-  <app-polje label="Količina" type="number" [formField]="narociloObrazec.kolicina" />
-</ng-template>

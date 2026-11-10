@@ -2,11 +2,38 @@
 
 <mat-dialog-content>
   <div class="polja">
-    <ng-container [ngTemplateOutlet]="podatki.predloga" />
+    @for (polje of podatki.polja; track polje.kljuc) {
+      @let f = podatki.obrazec[polje.kljuc];
+      <mat-form-field>
+        <mat-label>{{ polje.oznaka }}</mat-label>
+        @if (polje.moznosti) {
+          <select matNativeControl [formField]="f">
+            @if (polje.placeholder) {
+              <option value="" disabled>{{ polje.placeholder }}</option>
+            }
+            @for (m of polje.moznosti(); track m.vrednost) {
+              <option [value]="m.vrednost">{{ m.oznaka }}</option>
+            }
+          </select>
+        } @else if (polje.tip === 'number') {
+          <input matInput type="number" [formField]="f" />
+        } @else if (polje.tip === 'email') {
+          <input matInput type="email" [formField]="f" />
+        } @else if (polje.tip === 'password') {
+          <input matInput type="password" [formField]="f" />
+        } @else {
+          <input matInput [formField]="f" />
+        }
+        <mat-error>{{ f().errors() | napaka }}</mat-error>
+      </mat-form-field>
+    }
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Prekliči</button>
-  <button mat-flat-button [disabled]="!podatki.veljaven()" (click)="shrani()">Shrani</button>
+  <!-- onemogočen gumb ne sprejme klika, zato klik ujame ovoj in pokaže napake -->
+  <span (click)="podatki.obrazec().markAsTouched()">
+    <button mat-flat-button [disabled]="podatki.obrazec().invalid()" (click)="shrani()">Shrani</button>
+  </span>
 </mat-dialog-actions>
