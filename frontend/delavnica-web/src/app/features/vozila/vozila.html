@@ -1,6 +1,6 @@
 <app-page-header naslov="Vozila">
   @if (jeVodja()) {
-    <button mat-flat-button (click)="dodaj(obrazecPredloga)">Dodaj vozilo</button>
+    <button mat-flat-button (click)="dodaj()">Dodaj vozilo</button>
   }
 </app-page-header>
 
@@ -25,12 +25,3 @@
     }
   </table>
 </div>
-
-<!-- polja obrazca, prikaže jih okno -->
-<ng-template #obrazecPredloga>
-  <app-izbira label="Lastnik" placeholder="Izberi stranko" [moznosti]="stranke()" [formField]="obrazec.lastnikId" />
-  <app-polje label="Znamka" [formField]="obrazec.znamka" />
-  <app-polje label="Model" [formField]="obrazec.model" />
-  <app-polje label="Letnik" type="number" [formField]="obrazec.letnik" />
-  <app-polje label="Registrska številka" [formField]="obrazec.registrska" />
-</ng-template>

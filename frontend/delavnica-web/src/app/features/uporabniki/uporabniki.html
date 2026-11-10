@@ -1,5 +1,5 @@
 <app-page-header naslov="Uporabniki">
-  <button mat-flat-button (click)="dodaj(obrazecPredloga)">Dodaj uporabnika</button>
+  <button mat-flat-button (click)="odpri()">Dodaj uporabnika</button>
 </app-page-header>
 
 <table>
@@ -11,19 +11,9 @@
       <td>{{ uporabnik.telefon }}</td>
       <td>{{ uporabnik.vloga }}</td>
       <td>
-        <button mat-button (click)="uredi(obrazecPredloga, uporabnik)">Uredi</button>
+        <button mat-button (click)="odpri(uporabnik)">Uredi</button>
         <button mat-button (click)="izbrisi(uporabnik)">Izbriši</button>
       </td>
     </tr>
   }
 </table>
-
-<!-- polja obrazca, prikaže jih okno -->
-<ng-template #obrazecPredloga>
-  <app-polje label="Ime" [formField]="obrazec.ime" />
-  <app-polje label="Priimek" [formField]="obrazec.priimek" />
-  <app-polje label="Email" type="email" [formField]="obrazec.email" />
-  <app-polje [label]="urejanjeId() ? 'Geslo (prazno = nespremenjeno)' : 'Geslo'" type="password" [formField]="obrazec.geslo" />
-  <app-polje label="Telefon" [formField]="obrazec.telefon" />
-  <app-izbira label="Vloga" [moznosti]="vloge" [formField]="obrazec.vloga" />
-</ng-template>
